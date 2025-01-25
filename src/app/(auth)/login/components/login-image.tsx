@@ -6,8 +6,8 @@ type Props = {
   className?:string;
 }
 const LoginImage = async ({ width='200px', height='200px', className = ""}:Props) => {
-  const meta:any = await getMeta();
-  const primaryColor = meta?.customization?.app_color_primary;
+  const meta = await getMeta();
+  const primaryColor = meta?.vendor?.color_primary || "#333";
   return (
     <>
     <svg

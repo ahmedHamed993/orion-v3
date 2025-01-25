@@ -65,7 +65,11 @@ export default {
 		animation: {
 			"caret-blink": "caret-blink 1.25s ease-out infinite",
 		},
-  	}
+  	},
+	container :{
+		center:true,
+		padding:"0 1rem",
+	}
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;

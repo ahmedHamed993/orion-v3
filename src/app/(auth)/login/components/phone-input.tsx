@@ -87,7 +87,7 @@ const CountrySelect = ({
             <ScrollArea className="h-72">
               <CommandEmpty>No country found.</CommandEmpty>
               <CommandGroup>
-                {countryList?.filter((l) => l?.label?.toLowerCase() === 'lybia').map(({ value, label }) =>
+                {countryList?.map(({ value, label }) =>
                   value ? (
                     <CountrySelectOption
                       key={value}
@@ -154,8 +154,7 @@ React.forwardRef<React.ElementRef<typeof RPNInput.default>, PhoneInputProps>(
         smartCaret={false}
         international={true}
         onChange={(value) => onChange?.(value || ("" as RPNInput.Value))}
-
-        defaultCountry="LY"
+        defaultCountry="LY" 
         {...props}
       />
     );
