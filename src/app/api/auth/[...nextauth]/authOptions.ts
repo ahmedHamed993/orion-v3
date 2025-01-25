@@ -1,6 +1,6 @@
 import NextAuth, { AuthOptions , Session, DefaultSession} from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
-import { otpLogin } from "@/api-calls/login/otpLogin";
+import { otpLogin } from "@/api-calls/auth/otpLogin";
 
 export const authOptions:AuthOptions = {
     providers:[

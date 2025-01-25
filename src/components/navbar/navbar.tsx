@@ -21,7 +21,7 @@ const Navbar = async () => {
   return (
     <div className={``} style={{backgroundColor:primaryColor}}>
       <div className="container py-2 px-4 flex items-center gap-4">
-        <img src={meta?.vendor?.img} height='50px' className='h-14' alt={meta?.vendor.slug} loading='lazy'/>
+        <img src={meta?.vendor?.img} height='50px' className='h-14' alt={meta?.vendor?.slug} loading='lazy'/>
         <NavbarSearch bg={'#ffffff40'} />
         {session?.user?.accessToken && 
           <div className='flex items-center gap-4'>

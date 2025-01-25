@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/input-otp";
 import LoginImage from './login-image';
 import { getContrastColor } from '@/lib/getContrastColor';
-import { getOtp } from '@/api-calls/login/getOtp';
+import { getOtp } from '@/api-calls/auth/getOtp';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 type Props = {
