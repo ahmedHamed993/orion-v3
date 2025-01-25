@@ -7,7 +7,7 @@ import NavbarIconLink from './navbar-icon-link';
 import { ShoppingCart, ScrollText, User, LogIn} from 'lucide-react';
 // next-auth 
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import UserMenu from './user-menu';
 
 
