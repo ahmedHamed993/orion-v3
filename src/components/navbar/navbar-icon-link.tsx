@@ -9,7 +9,7 @@ const NavbarIconLink =  async ({href, icon, label}:{href:string;icon:ReactNode; 
     return (
       <Link href={href} className='flex items-center gap-2' style={{color:primaryColorContrast}}>
         {icon}
-        {label}
+        <span className="hidden md:inline">{label}</span>
       </Link>
     )
   }

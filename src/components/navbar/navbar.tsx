@@ -4,11 +4,13 @@ import { getMeta } from '@/api-calls/meta';
 import NavbarSearch from './navbar-search';
 import NavbarIconLink from './navbar-icon-link';
 // icons 
-import { ShoppingCart, ScrollText, User, LogIn} from 'lucide-react';
+import { ShoppingCart, ScrollText, Key, LogIn} from 'lucide-react';
+
 // next-auth 
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions';
 import UserMenu from './user-menu';
+import CartToggler from './cart-toggler';
 
 
 const Navbar = async () => {
@@ -22,16 +24,15 @@ const Navbar = async () => {
         <img src={meta?.vendor?.img} height='50px' className='h-14' alt={meta?.vendor.slug} loading='lazy'/>
         <NavbarSearch bg={'#ffffff40'} />
         {session?.user?.accessToken && 
-          <div className='hidden md:flex md:items-center md:gap-4'>
-            <NavbarIconLink href="/?openCart=true" label="السلة" icon={<ShoppingCart />} />
-            <NavbarIconLink href="/orders" label="الطلبات" icon={<ScrollText /> } />
-            {/* <NavbarIconLink href="/profile" label="الملف الشخصي" icon={<User /> } /> */}
+          <div className='flex items-center gap-4'>
+            {/* <NavbarIconLink href="/?openCart=true" label="السلة" icon={<ShoppingCart />} /> */}
+            <CartToggler />
             <UserMenu />
           </div>
         }
         {
           !session?.user?.accessToken && 
-          <NavbarIconLink href="/login" label="تسجيل الدخول" icon={<LogIn /> } />
+          <NavbarIconLink href="/login" label="تسجيل دخول" icon={<Key /> } />
         }
       </div>
     </div>

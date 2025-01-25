@@ -8,6 +8,7 @@ import { Banner } from '@/types/types';
 const HomeBanners = ({banners}:{banners:Banner[]}) => {
     const settings = {
         navigator:false,
+        arrows:false,
         infinite: true,
         slidesToShow: 1,
         slidesToScroll: 1,
