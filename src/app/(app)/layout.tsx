@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 const cairo = Cairo({
   variable:"--font-cairo",
-  // subsets:['arabic']
+  subsets:['arabic']
 })
 
 export const metadata: Metadata = {

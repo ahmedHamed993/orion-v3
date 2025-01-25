@@ -4,7 +4,7 @@ import "../globals.css"
 import Providers from "@/components/providers/providers";
 const cairo = Cairo({
   variable:"--font-cairo",
-  // subsets:['arabic']
+  subsets:['arabic']
 })
 
 export const metadata: Metadata = {
