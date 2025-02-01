@@ -3,7 +3,8 @@ import React, { useState } from "react";
 // next
 import { useRouter, useSearchParams } from "next/navigation";
 // icons
-import { Search } from "lucide-react";
+import { LuSearch } from "react-icons/lu";
+
 const NavbarSearch = ({
   bg,
   hideSearchBtn = false,
@@ -33,7 +34,7 @@ const NavbarSearch = ({
         <></>
       ) : (
         <button onClick={goSearch}>
-          <Search />
+          <LuSearch />
         </button>
       )}
     </div>

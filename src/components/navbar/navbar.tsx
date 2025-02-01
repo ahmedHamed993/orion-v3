@@ -4,8 +4,7 @@ import { getMeta } from "@/api-calls/meta";
 import NavbarSearch from "./navbar-search";
 import NavbarIconLink from "./navbar-icon-link";
 // icons
-import { ShoppingCart, ScrollText, Key, LogIn } from "lucide-react";
-
+import { AiOutlineLogin } from "react-icons/ai";
 // next-auth
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
@@ -35,7 +34,7 @@ const Navbar = async () => {
           </div>
         )}
         {!session?.user?.accessToken && (
-          <NavbarIconLink href="/login" label="تسجيل دخول" icon={<Key />} />
+          <NavbarIconLink href="/login" label="تسجيل دخول" icon={<AiOutlineLogin />} />
         )}
       </div>
     </div>

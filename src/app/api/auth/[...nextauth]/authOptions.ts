@@ -13,7 +13,7 @@ export const authOptions: AuthOptions = {
           (credentials as any)?.phone || "",
           (credentials as any)?.otp || "",
         );
-        console.log("login authorize user ==================== user", user);
+        // console.log("login authorize user ==================== user", user);
         if (user?.token?.value) return user;
         throw user;
       },
@@ -32,7 +32,6 @@ export const authOptions: AuthOptions = {
       // console.log("\n jwt =========================== token \n", token)
       // console.log("\n jwt =========================== user \n", user)
       if (user && (user as any)?.token?.value) {
-        console.log("==== in if ====");
         token.accessToken = (user as any).token?.value ?? null;
         // token.user = user;
       }

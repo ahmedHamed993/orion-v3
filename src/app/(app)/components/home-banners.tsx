@@ -23,7 +23,7 @@ const HomeBanners = ({ banners }: { banners: Banner[] }) => {
           <div className="bg-slate-400 w-full " key={banner.id}>
             <img
               className="w-full h-full object-cover"
-              style={{ aspectRatio: "21/6" }}
+              style={{ aspectRatio: "21/9" }}
               src={banner?.img}
             />
           </div>

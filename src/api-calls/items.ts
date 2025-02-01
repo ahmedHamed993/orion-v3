@@ -7,7 +7,6 @@ export const getItems: GetItems = async (page, paginate) => {
       `${process.env.BASE_URL}/items?page=${page}&paginate=${paginate}`,
     );
     const data = await response.json();
-    console.log("get", data);
     return data;
   } catch (error) {
     console.error(error);
@@ -23,7 +22,6 @@ export const getItemsWithFilters = async (
   let endpoint = `${process.env.BASE_URL}/items?`;
   const query = convertSearchParamsToQuery(filters);
   endpoint += query;
-  console.log("items endpoint", endpoint);
   try {
     const response = await fetch(endpoint);
     const data = await response.json();

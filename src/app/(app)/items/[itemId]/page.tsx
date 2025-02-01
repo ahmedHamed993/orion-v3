@@ -1,14 +1,17 @@
 import React from "react";
 // api calls
 import { getItemById } from "@/api-calls/items";
+import { getMeta } from "@/api-calls/meta";
 // components
 import NoItems from "@/components/no-items/no-items";
-import Image from "next/image";
 import ItemImages from "./components/item-images";
-import { Item, MetaData } from "@/types/types";
-import Link from "next/link";
 import CardAddToCart from "@/components/item-card/card-add-to-cart";
-import { getMeta } from "@/api-calls/meta";
+// next 
+import Image from "next/image";
+import Link from "next/link";
+// types 
+import { Item, MetaData } from "@/types/types";
+
 // types
 type Props = {
   params: Promise<{
@@ -19,6 +22,7 @@ const ItemDetails = async ({ params }: Props) => {
   const { itemId } = await params;
   const item: Item = await getItemById(itemId);
   const meta = await getMeta();
+
   if (!item) return <NoItems />;
   return (
     <div className="py-8">

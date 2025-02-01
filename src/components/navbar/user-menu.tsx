@@ -3,7 +3,9 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 // icons
-import { LogOut, User, ScrollText } from "lucide-react";
+import { FaRegUser } from "react-icons/fa";
+import { GoChecklist } from "react-icons/go";
+
 // components
 import {
   DropdownMenu,
@@ -21,7 +23,7 @@ const UserMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="outline-none border-none">
         <button className="flex items-center gap-2 outline-none border-none">
-          <User />
+          <FaRegUser />
           <span className="hidden md:inline">الملف الشخصي</span>
         </button>
       </DropdownMenuTrigger>
@@ -30,7 +32,7 @@ const UserMenu = () => {
           className="flex justify-between"
           onClick={() => router.push("/profile")}
         >
-          <User />
+          <FaRegUser />
           <span>الملف الشخصي</span>
           {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
         </DropdownMenuItem>
@@ -39,7 +41,7 @@ const UserMenu = () => {
           className="flex justify-between"
           onClick={() => router.push("/profile/orders")}
         >
-          <ScrollText />
+          <GoChecklist />
           <span>طلباتي</span>
           {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
         </DropdownMenuItem>

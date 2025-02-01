@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 // icons
-import { LogOut } from "lucide-react";
+import { RiLogoutCircleLine } from "react-icons/ri";
 // components
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { logout } from "@/api-calls/auth/logout";
@@ -27,7 +27,7 @@ const LogoutMenuItem = () => {
       className="flex justify-between text-red-600 "
       onClick={logoutUser}
     >
-      <LogOut />
+      <RiLogoutCircleLine />
       <span>تسجيل الخروج</span>
     </DropdownMenuItem>
   );

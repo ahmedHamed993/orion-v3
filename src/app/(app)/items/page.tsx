@@ -10,11 +10,13 @@ import Filters from "./components/filters";
 import { getMeta } from "@/api-calls/meta";
 import { PaginationWithLinks } from "@/components/ui/pagination-with-links";
 import NoItems from "@/components/no-items/no-items";
+import { getAllCategories, structureCategories } from "@/api-calls/categories";
 
 const ItemsList = async ({ searchParams }: { searchParams: any }) => {
   const params = await searchParams;
   const meta = await getMeta();
   const items: Items = await getItemsWithFilters(params);
+
   return (
     <div className="pt-2 relative">
       <div className="container flex gap-8 relative px-4">

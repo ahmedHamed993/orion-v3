@@ -9,12 +9,13 @@ import {
 } from "@/components/ui/sheet";
 import { getMeta } from "@/api-calls/meta";
 import { getContrastColor } from "@/lib/getContrastColor";
-import { Filter } from "lucide-react";
+import { LuFilter } from "react-icons/lu";
+
 const Filters = ({ primaryColor }: { primaryColor: string }) => {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <div className="w-64 sticky top-0 hidden lg:block h-fit max-h-fit pt-4">
+      <div className="w-64 sticky top-0 hidden lg:block h-fit max-h-fit py-4">
         <ItemsFilters primaryColor={primaryColor} />
       </div>
       <button
@@ -25,7 +26,7 @@ const Filters = ({ primaryColor }: { primaryColor: string }) => {
         }}
         onClick={() => setOpen(true)}
       >
-        تصفية <Filter size={16} />
+        تصفية <LuFilter size={16} />
       </button>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent className="flex flex-col ">

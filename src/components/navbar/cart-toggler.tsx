@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { ShoppingCart } from "lucide-react";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Cart from "../cart/cart";
 
@@ -16,7 +17,7 @@ const CartToggler = () => {
     <>
       <button onClick={toggleCart} className="flex items-center gap-2">
         <span className="hidden md:inline">السلة</span>
-        <ShoppingCart />
+        <AiOutlineShoppingCart />
       </button>
       <Cart open={open} setOpen={setOpen} />
     </>

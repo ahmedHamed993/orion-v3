@@ -85,6 +85,11 @@ export type Category = {
     name: string;
   }[];
 };
+export type StructuredCategory = {
+  id: string;
+  name:string;
+  children:StructuredCategory[];
+}
 export type Categories = {
   meta: MetaData;
   data: Category[];

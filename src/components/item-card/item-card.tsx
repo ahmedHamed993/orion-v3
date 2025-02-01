@@ -18,7 +18,10 @@ const ItemCard = async ({ item }: Props) => {
         style={{ aspectRatio: "4/3", width: "100%", objectFit: "contain" }}
         alt={item.name}
       />
-      <div className="p-2 flex flex-col flex-1">
+      <div className="p-2 flex flex-col flex-1 relative">
+          <div className="absolute -top-14 left-1">
+            <CardAddToCart item={item} primaryColor={primaryColor || "#333"} />
+          </div>
         <Link
           href={`/items/${item?.id}`}
           className="flex justify-between items-center gap-4 mb-2"
@@ -31,7 +34,6 @@ const ItemCard = async ({ item }: Props) => {
           <Link href={`/items/${item?.id}`} className=" line-clamp-2 ">
             {item.description}
           </Link>
-          <CardAddToCart item={item} primaryColor={primaryColor || "#333"} />
         </div>
       </div>
     </div>
