@@ -17,10 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 const cairo = Cairo({
-  variable:"--font-cairo",
-  subsets:['arabic']
-})
-
+  variable: "--font-cairo",
+  subsets: ["arabic"],
+});
 
 export async function generateMetadata() {
   const meta = await getMeta();
@@ -41,8 +40,8 @@ export async function generateMetadata() {
           height: 256,
         },
       ],
-    }
-  }
+    },
+  };
 }
 export default function RootLayout({
   children,
@@ -50,11 +49,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir='rtl' suppressHydrationWarning>
-      <body
-        className={`${cairo.className} antialiased`}
-      >
-      {/* <body
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
+      <body className={`${cairo.className} antialiased`}>
+        {/* <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       > */}
         <Providers>

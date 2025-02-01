@@ -1,10 +1,10 @@
-// icons 
+// icons
 import { HiMiniChevronUpDown } from "react-icons/hi2";
 import { FaCheck } from "react-icons/fa6";
-// react phone number 
+// react phone number
 import * as RPNInput from "react-phone-number-input";
 import flags from "react-phone-number-input/flags";
-// shadcn 
+// shadcn
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import React, { forwardRef } from 'react';
+import React, { forwardRef } from "react";
 
 type PhoneInputProps = Omit<
   React.ComponentProps<"input">,
@@ -130,7 +130,7 @@ const CountrySelectOption = ({
   );
 };
 
-const FlagComponent = ({ country , countryName }: RPNInput.FlagProps) => {
+const FlagComponent = ({ country, countryName }: RPNInput.FlagProps) => {
   const Flag = flags[country];
 
   return (
@@ -140,26 +140,25 @@ const FlagComponent = ({ country , countryName }: RPNInput.FlagProps) => {
   );
 };
 
-
 const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
-React.forwardRef<React.ElementRef<typeof RPNInput.default>, PhoneInputProps>(
-  ({ className, onChange, ...props }, ref) => {
-    return (
-      <RPNInput.default
-        ref={ref}
-        className={cn("flex", className)}
-        flagComponent={FlagComponent}
-        countrySelectComponent={CountrySelect}
-        inputComponent={InputComponent}
-        smartCaret={false}
-        international={true}
-        onChange={(value) => onChange?.(value || ("" as RPNInput.Value))}
-        defaultCountry="LY" 
-        {...props}
-      />
-    );
-  },
-);
+  React.forwardRef<React.ElementRef<typeof RPNInput.default>, PhoneInputProps>(
+    ({ className, onChange, ...props }, ref) => {
+      return (
+        <RPNInput.default
+          ref={ref}
+          className={cn("flex", className)}
+          flagComponent={FlagComponent}
+          countrySelectComponent={CountrySelect}
+          inputComponent={InputComponent}
+          smartCaret={false}
+          international={true}
+          onChange={(value) => onChange?.(value || ("" as RPNInput.Value))}
+          defaultCountry="LY"
+          {...props}
+        />
+      );
+    },
+  );
 PhoneInput.displayName = "PhoneInput";
 
 export default PhoneInput;
