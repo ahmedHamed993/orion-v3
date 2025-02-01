@@ -11,12 +11,12 @@ import CardAddToCart from "@/components/item-card/card-add-to-cart";
 import { getMeta } from "@/api-calls/meta";
 // types
 type Props = {
-  params: {
+  params: Promise<{
     itemId: string;
-  };
+  }>;
 };
 const ItemDetails = async ({ params }: Props) => {
-  const { itemId } = params;
+  const { itemId } = await params;
   const item: Item = await getItemById(itemId);
   const meta = await getMeta();
   if (!item) return <NoItems />;
@@ -24,10 +24,13 @@ const ItemDetails = async ({ params }: Props) => {
     <div className="py-8">
       <div className="container px-2">
         <div className="flex gap-8 flex-col md:flex-row">
-          <ItemImages image={item.img} images={item.images} />
+          <div className="flex flex-col gap-4">
+            <ItemImages image={item.img} images={item.images} />
+            <CardAddToCart item={item} primaryColor={meta?.vendor.color_primary || "#333"} />
+          </div>
           <div className="flex-1">
             {/* name price  */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-start md:items-center justify-between gap-4 flex-col md:flex-row">
               <h1 className="text-lg font-bold">{item.name}</h1>
               <h2 className="text-xl font-bold">{item.final_price} د.ل</h2>
             </div>
@@ -39,7 +42,6 @@ const ItemDetails = async ({ params }: Props) => {
             <div className="">
               {item.description}
             </div>
-            <CardAddToCart item={item} primaryColor={meta?.vendor.color_primary || "#333"} />
           </div>
         </div>
       </div>
