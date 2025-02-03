@@ -7,7 +7,6 @@ import { IoCheckmarkOutline } from "react-icons/io5";
 import { TbChevronRight } from "react-icons/tb";
 import { FaRegCircle } from "react-icons/fa6";
 
-
 import { cn } from "@/lib/utils";
 
 const DropdownMenu = DropdownMenuPrimitive.Root;

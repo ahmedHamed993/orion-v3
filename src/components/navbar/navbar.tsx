@@ -34,7 +34,11 @@ const Navbar = async () => {
           </div>
         )}
         {!session?.user?.accessToken && (
-          <NavbarIconLink href="/login" label="تسجيل دخول" icon={<AiOutlineLogin />} />
+          <NavbarIconLink
+            href="/login"
+            label="تسجيل دخول"
+            icon={<AiOutlineLogin />}
+          />
         )}
       </div>
     </div>

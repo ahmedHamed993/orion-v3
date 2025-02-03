@@ -12,16 +12,16 @@ const ItemCard = async ({ item }: Props) => {
   const meta = await getMeta();
   const primaryColor = meta?.vendor?.color_primary;
   return (
-    <div className="shadow-md rounded-md border-[1px] border-slate-200 p-2 flex flex-col">
+    <div className="shadow-md rounded-md border-[1px] border-slate-200 bg-white p-2 flex flex-col">
       <img
         src={item?.img}
         style={{ aspectRatio: "4/3", width: "100%", objectFit: "contain" }}
         alt={item.name}
       />
       <div className="p-2 flex flex-col flex-1 relative">
-          <div className="absolute -top-14 left-1">
-            <CardAddToCart item={item} primaryColor={primaryColor || "#333"} />
-          </div>
+        <div className="absolute -top-14 left-1">
+          <CardAddToCart item={item} primaryColor={primaryColor || "#333"} />
+        </div>
         <Link
           href={`/items/${item?.id}`}
           className="flex justify-between items-center gap-4 mb-2"

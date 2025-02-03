@@ -14,20 +14,33 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ value, onChange }) => {
   const [preview, setPreview] = useState<string | null>(value || null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
-
+  
     try {
-      const options = { maxSizeMB: 1, maxWidthOrHeight: 1000, useWebWorker: true };
-      const compressedFile = await imageCompression(file, options);
-
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1000,
+        useWebWorker: true,
+      };
+      const compressedBlob = await imageCompression(file, options);
+  
+      // Convert Blob to File
+      const compressedFile = new File([compressedBlob], file.name, {
+        type: file.type,
+        lastModified: Date.now(),
+      });
+  
       setPreview(URL.createObjectURL(compressedFile));
       onChange(compressedFile);
     } catch (error) {
       console.error("Image compression failed", error);
     }
   };
+  
 
   return (
     <div className="flex flex-col items-center gap-3">
@@ -36,7 +49,13 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ value, onChange }) => {
         onClick={() => fileInputRef.current?.click()}
       >
         {preview ? (
-          <Image src={preview} alt="Uploaded" width={160} height={160} className="object-cover w-full h-full" />
+          <Image
+            src={preview}
+            alt="Uploaded"
+            width={160}
+            height={160}
+            className="object-cover w-full h-full"
+          />
         ) : (
           <LuImageUp className="text-gray-400 text-6xl" />
         )}

@@ -24,15 +24,17 @@ const ItemsFilterCategories = ({ filters, handleCategoryChange }: Props) => {
       setOpen((prev) => [...prev, catId]);
     }
   };
-  const getCategories = async ()=>{
+  const getCategories = async () => {
     const allCategories = await getAllCategories();
-    setCategories(allCategories || [])
+    setCategories(allCategories || []);
     setLoading(false);
-  }
+  };
   useEffect(() => {
     getCategories();
   }, []);
-  return loading? <p>loading..</p> : (
+  return loading ? (
+    <p>loading..</p>
+  ) : (
     <div>
       {/* {nestedCategories.map((c) => (
         <div key={c.id}>
@@ -170,10 +172,10 @@ const nestedCategories = [
     ],
   },
 ];
- // filters.categories.forEach((item: string) => {
-    //   categories?.forEach((pItem) => {
-    //     if (pItem.children.some((i) => i.id === item)) {
-    //       setOpen((prev) => [...prev, pItem.id]);
-    //     }
-    //   });
-    // });
+// filters.categories.forEach((item: string) => {
+//   categories?.forEach((pItem) => {
+//     if (pItem.children.some((i) => i.id === item)) {
+//       setOpen((prev) => [...prev, pItem.id]);
+//     }
+//   });
+// });

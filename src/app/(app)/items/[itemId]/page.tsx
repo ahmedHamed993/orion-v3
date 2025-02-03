@@ -6,10 +6,10 @@ import { getMeta } from "@/api-calls/meta";
 import NoItems from "@/components/no-items/no-items";
 import ItemImages from "./components/item-images";
 import CardAddToCart from "@/components/item-card/card-add-to-cart";
-// next 
+// next
 import Image from "next/image";
 import Link from "next/link";
-// types 
+// types
 import { Item, MetaData } from "@/types/types";
 
 // types
@@ -30,7 +30,11 @@ const ItemDetails = async ({ params }: Props) => {
         <div className="flex gap-8 flex-col md:flex-row">
           <div className="flex flex-col gap-4">
             <ItemImages image={item.img} images={item.images} />
-            <CardAddToCart item={item} primaryColor={meta?.vendor.color_primary || "#333"} />
+            <CardAddToCart
+              item={item}
+              primaryColor={meta?.vendor.color_primary || "#333"}
+              variant="quantity"
+            />
           </div>
           <div className="flex-1">
             {/* name price  */}
@@ -40,12 +44,18 @@ const ItemDetails = async ({ params }: Props) => {
             </div>
             {/* categories  */}
             <div className="my-2 overflow-x-auto">
-              {item.categories.map(cat => <Link key={cat.id} href={`/items?page=1&paginate=12&categories=${cat.id}`} className="bg-slate-200 rounded-full text-xs px-2 text-slate-950 ">{cat.name}</Link>)}
+              {item.categories.map((cat) => (
+                <Link
+                  key={cat.id}
+                  href={`/items?page=1&paginate=12&categories=${cat.id}`}
+                  className="bg-slate-200 rounded-full text-xs px-2 text-slate-950 "
+                >
+                  {cat.name}
+                </Link>
+              ))}
             </div>
             {/* description  */}
-            <div className="">
-              {item.description}
-            </div>
+            <div className="">{item.description}</div>
           </div>
         </div>
       </div>

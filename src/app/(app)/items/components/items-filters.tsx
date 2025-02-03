@@ -83,12 +83,12 @@ const ItemsFilters = ({ primaryColor }: { primaryColor: string }) => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       {/* search  */}
-      <div className="py-2">
+      <div className="">
         <input
           type="search"
-          className="border-none outline-none w-full bg-slate-100 py-2 px-2 rounded-md"
+          className="border-none outline-none w-full shadow-none lg:shadow-sm bg-white py-2 px-2 rounded-md border-[1px] border-slate-200"
           placeholder="بحث..."
           value={filters.q}
           onChange={(e) =>
@@ -97,7 +97,7 @@ const ItemsFilters = ({ primaryColor }: { primaryColor: string }) => {
         />
       </div>
       {/* sorts  */}
-      <div className="py-2">
+      <div className="py-2 bg-white px-2 shadow-none lg:shadow-sm rounded-md">
         <h6 className="font-semibold mb-2">الترتيب</h6>
         <div className="flex flex-col gap-2">
           <Select
@@ -112,7 +112,9 @@ const ItemsFilters = ({ primaryColor }: { primaryColor: string }) => {
             </SelectTrigger>
             <SelectContent>
               {sortsOptions.map((opt) => (
-                <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                <SelectItem key={opt.value} value={opt.value}>
+                  {opt.label}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -130,7 +132,7 @@ const ItemsFilters = ({ primaryColor }: { primaryColor: string }) => {
         </div>
       </div>
       {/* categories  */}
-      <div className="py-2">
+      <div className="py-2 bg-white px-2 shadow-none lg:shadow-sm rounded-md">
         <h6 className="font-semibold mb-2">التصنيفات</h6>
         <ItemsFilterCategories
           filters={filters}
@@ -138,7 +140,7 @@ const ItemsFilters = ({ primaryColor }: { primaryColor: string }) => {
         />
       </div>
       {/* price  */}
-      <div className="py-2">
+      <div className="py-2 bg-white px-2 shadow-none lg:shadow-sm rounded-md">
         <h6 className="font-semibold mb-2">السعر</h6>
         <div className="flex flex-col gap-1">
           {range[0]} - {range[1]}

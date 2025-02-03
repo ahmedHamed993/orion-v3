@@ -87,9 +87,9 @@ export type Category = {
 };
 export type StructuredCategory = {
   id: string;
-  name:string;
-  children:StructuredCategory[];
-}
+  name: string;
+  children: StructuredCategory[];
+};
 export type Categories = {
   meta: MetaData;
   data: Category[];
@@ -109,7 +109,7 @@ export type Item = {
   is_disabled: boolean;
   rate_avg: number;
   is_card: boolean;
-  categories:Category[];
+  categories: Category[];
   images: { id: string; img: string }[] | [];
   created_at: string;
   updated_at: string;

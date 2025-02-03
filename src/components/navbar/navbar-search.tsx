@@ -34,7 +34,7 @@ const NavbarSearch = ({
         <></>
       ) : (
         <button onClick={goSearch}>
-          <LuSearch />
+          <LuSearch size={20} />
         </button>
       )}
     </div>

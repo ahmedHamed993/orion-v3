@@ -37,14 +37,13 @@ const UserMenu = () => {
           {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
+        {/* <DropdownMenuItem
           className="flex justify-between"
           onClick={() => router.push("/profile/orders")}
         >
           <GoChecklist />
           <span>طلباتي</span>
-          {/* <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut> */}
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <DropdownMenuSeparator />
         <LogoutMenuItem />
       </DropdownMenuContent>

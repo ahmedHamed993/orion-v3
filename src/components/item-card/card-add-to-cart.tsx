@@ -1,19 +1,19 @@
 "use client";
 import React, { useState } from "react";
-// icons 
+// icons
 import { MdAddShoppingCart } from "react-icons/md";
-import { FiPlus,FiMinus } from "react-icons/fi";
-// libs 
+import { FiPlus, FiMinus } from "react-icons/fi";
+// libs
 import { getContrastColor } from "@/lib/getContrastColor";
-// types 
+// types
 import { Item } from "@/types/types";
 type Props = {
   item: Item;
   primaryColor: string;
-  variant?:"default"|"quantity"
+  variant?: "default" | "quantity";
 };
 
-const CardAddToCart = ({ item, primaryColor, variant = 'default'}: Props) => {
+const CardAddToCart = ({ item, primaryColor, variant = "default" }: Props) => {
   const primaryColorContrast = getContrastColor(primaryColor);
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -34,25 +34,27 @@ const CardAddToCart = ({ item, primaryColor, variant = 'default'}: Props) => {
       }, 4000);
     });
   };
-  if(variant === 'default') {
+  if (variant === "default") {
     return (
-      <button 
-      onClick={handleAddToCart}
-      className=' py-2 rounded-md font-semibold flex justify-center items-center gap-4 w-10 h-10 shadow-md' style={{backgroundColor:primaryColor, color:primaryColorContrast}}>
-       {loading ? (
-            <span
-              className="loader"
-              style={{ border: `3px solid ${getContrastColor(primaryColor)}` }}
-            ></span>
-          ) : (
-            <MdAddShoppingCart size={20} />
-          )}
+      <button
+        onClick={handleAddToCart}
+        className=" py-2 rounded-md font-semibold flex justify-center items-center gap-4 w-10 h-10 shadow-md"
+        style={{ backgroundColor: primaryColor, color: primaryColorContrast }}
+      >
+        {loading ? (
+          <span
+            className="loader"
+            style={{ border: `3px solid ${getContrastColor(primaryColor)}` }}
+          ></span>
+        ) : (
+          <MdAddShoppingCart size={20} />
+        )}
       </button>
-    )
+    );
   }
   return (
     <>
-      <div className="flex justify-start gap-2">
+      <div className="flex justify-start gap-2 min-h-12">
         <div className="w-fit flex border-[1px] border-slate-200 flex-1 rounded-md">
           <button
             className="bg-slate-100 min-w-12 flex justify-center items-center"
@@ -84,7 +86,7 @@ const CardAddToCart = ({ item, primaryColor, variant = 'default'}: Props) => {
               style={{ border: `3px solid ${getContrastColor(primaryColor)}` }}
             ></span>
           ) : (
-            <MdAddShoppingCart />
+            <MdAddShoppingCart size={20} />
           )}
         </button>
       </div>
