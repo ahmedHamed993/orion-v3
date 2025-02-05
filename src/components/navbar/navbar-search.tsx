@@ -7,9 +7,12 @@ import { LuSearch } from "react-icons/lu";
 
 const NavbarSearch = ({
   bg,
+  iconColor,
   hideSearchBtn = false,
+  
 }: {
   bg: string;
+  iconColor:string;
   hideSearchBtn?: boolean;
 }) => {
   const searchParams = useSearchParams();
@@ -21,7 +24,7 @@ const NavbarSearch = ({
   return (
     <div
       className="flex-1  flex items-center p-2 rounded-md border-[1px] border-slate-50/60"
-      style={{ background: bg }}
+      style={{ background: bg , color:iconColor}}
     >
       <input
         type="search"

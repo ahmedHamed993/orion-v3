@@ -13,6 +13,7 @@ import {
 import { DropdownMenuSeparator } from "../ui/dropdown-menu";
 import Image from "next/image";
 import Link from "next/link";
+import CartList from "./cart-list";
 
 type Props = {
   open: boolean;
@@ -27,13 +28,7 @@ const Cart = ({ open, setOpen }: Props) => {
         </SheetHeader>
         <DropdownMenuSeparator />
         <div className="flex-1 overflow-y-auto">
-          <Image
-            src="/images/empty-cart.png"
-            width={200}
-            height={200}
-            alt="empty cart"
-            className="text-center mx-auto"
-          />
+         <CartList />
         </div>
         <DropdownMenuSeparator />
         <SheetFooter className="p-0">

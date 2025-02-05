@@ -6,7 +6,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Cart from "../cart/cart";
 
-const CartToggler = () => {
+const CartToggler = ({color}:{color:string}) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const toggleCart = () => {
@@ -15,7 +15,7 @@ const CartToggler = () => {
 
   return (
     <>
-      <button onClick={toggleCart} className="flex items-center gap-2">
+      <button onClick={toggleCart} className="flex items-center gap-2" style={{color:color}}>
         <span className="hidden md:inline">السلة</span>
         <AiOutlineShoppingCart />
       </button>

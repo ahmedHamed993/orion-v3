@@ -10,6 +10,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import UserMenu from "./user-menu";
 import CartToggler from "./cart-toggler";
+import { getContrastColor } from "@/lib/getContrastColor";
 
 const Navbar = async () => {
   const session = await getServerSession(authOptions);
@@ -25,12 +26,12 @@ const Navbar = async () => {
           alt={meta?.vendor?.slug}
           loading="lazy"
         />
-        <NavbarSearch bg={"#ffffff40"} />
+        <NavbarSearch bg={"#ffffff40"} iconColor={getContrastColor(primaryColor)} />
         {session?.user?.accessToken && (
           <div className="flex items-center gap-4">
             {/* <NavbarIconLink href="/?openCart=true" label="السلة" icon={<ShoppingCart />} /> */}
-            <CartToggler />
-            <UserMenu />
+            <CartToggler color={getContrastColor(primaryColor)}/>
+            <UserMenu color={getContrastColor(primaryColor)} />
           </div>
         )}
         {!session?.user?.accessToken && (

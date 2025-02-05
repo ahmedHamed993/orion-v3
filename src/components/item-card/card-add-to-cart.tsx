@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // icons
 import { MdAddShoppingCart } from "react-icons/md";
 import { FiPlus, FiMinus } from "react-icons/fi";
@@ -7,6 +7,13 @@ import { FiPlus, FiMinus } from "react-icons/fi";
 import { getContrastColor } from "@/lib/getContrastColor";
 // types
 import { Item } from "@/types/types";
+// next-auth 
+import { useSession } from "next-auth/react";
+// components 
+import LoginDialog from "../login-dialog/login-dialog";
+// lib 
+import { getBaseUrl } from "@/api-calls/actions/getBaseUrl";
+import { toast } from "react-toastify";
 type Props = {
   item: Item;
   primaryColor: string;
@@ -14,9 +21,12 @@ type Props = {
 };
 
 const CardAddToCart = ({ item, primaryColor, variant = "default" }: Props) => {
+  const {data:session,status} = useSession();
   const primaryColorContrast = getContrastColor(primaryColor);
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [openLoginDialog, setOpenLoginDialog] = useState(false);
+  // const [baseUrl, setBaseUrl] = useState("");
   const incQuantity = () => {
     setQuantity((prev) => prev + 1);
   };
@@ -25,31 +35,54 @@ const CardAddToCart = ({ item, primaryColor, variant = "default" }: Props) => {
       setQuantity((prev) => prev - 1);
     }
   };
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+   const baseUrl = await getBaseUrl();
+    if(!session?.user.accessToken){
+      setOpenLoginDialog(true);
+      return;
+    }
     setLoading(true);
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        setLoading(false);
-        resolve(true);
-      }, 4000);
-    });
+    try{
+      const response = await fetch(`${baseUrl}/cart/add`,{
+        headers:{
+          Authorization:`Bearer ${session.user.accessToken}`
+        },
+        body:JSON.stringify({
+          item_id:item.id,
+          quantity:quantity
+        })
+      });
+      const data = await response.json();
+      if(data.id){
+        toast.success("تم اضافة المنتج الي السلة")
+        return;
+      }
+      throw data; 
+    }catch(error){
+      toast.error((error as any)?.message?.toString())
+    }finally {
+      setLoading(false);
+    }
   };
   if (variant === "default") {
     return (
-      <button
-        onClick={handleAddToCart}
-        className=" py-2 rounded-md font-semibold flex justify-center items-center gap-4 w-10 h-10 shadow-md"
-        style={{ backgroundColor: primaryColor, color: primaryColorContrast }}
-      >
-        {loading ? (
-          <span
-            className="loader"
-            style={{ border: `3px solid ${getContrastColor(primaryColor)}` }}
-          ></span>
-        ) : (
-          <MdAddShoppingCart size={20} />
-        )}
-      </button>
+      <>
+        <button
+          onClick={handleAddToCart}
+          className=" py-2 rounded-md font-semibold flex justify-center items-center gap-4 w-10 h-10 shadow-md"
+          style={{ backgroundColor: primaryColor, color: primaryColorContrast }}
+          >
+          {loading ? (
+            <span
+              className="loader"
+              style={{ border: `3px solid ${getContrastColor(primaryColor)}` }}
+            ></span>
+          ) : (
+            <MdAddShoppingCart size={20} />
+          )}
+        </button>
+        <LoginDialog open={openLoginDialog} setOpen={setOpenLoginDialog} />
+      </>
     );
   }
   return (
@@ -90,6 +123,7 @@ const CardAddToCart = ({ item, primaryColor, variant = "default" }: Props) => {
           )}
         </button>
       </div>
+      <LoginDialog open={openLoginDialog} setOpen={setOpenLoginDialog} />
     </>
   );
 };

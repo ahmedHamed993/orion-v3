@@ -16,13 +16,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import LogoutMenuItem from "./logout-menu-item";
 
-const UserMenu = () => {
+const UserMenu = ({color}:{color:string}) => {
   const router = useRouter();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="outline-none border-none">
-        <button className="flex items-center gap-2 outline-none border-none">
+        <button className="flex items-center gap-2 outline-none border-none" style={{color:color}}>
           <FaRegUser />
           <span className="hidden md:inline">الملف الشخصي</span>
         </button>
