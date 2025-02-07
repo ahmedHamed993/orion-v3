@@ -16,7 +16,8 @@ export const getCategories: GetCategories = async (filterStr: string = "") => {
 
 export const getAllCategories = async () => {
   try {
-    const response = await fetch(`${process.env.BASE_URL}/categories?all`);
+    const response = await fetch(`${process.env.BASE_URL}/categories?filters=depth:gt:1&all`);
+    // const response = await fetch(`${process.env.BASE_URL}/categories?all`);
     const data = await response.json();
     const final = structureCategories(data.data);
     return final;

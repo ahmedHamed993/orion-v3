@@ -41,11 +41,11 @@ const LoginForm = ({ logo, primaryColor }: Props) => {
         setPhase("otp");
         return;
       }
-      toast.success(otpResponse?.message);
-      toast.success(otpResponse?.pin, {
-        autoClose: 10000,
-      });
-      setPhase("otp");
+      // toast.success(otpResponse?.message);
+      // toast.success(otpResponse?.pin, {
+      //   autoClose: 10000,
+      // });
+     throw otpResponse;
     } catch (error) {
       toast.error((error as any)?.message);
     }
