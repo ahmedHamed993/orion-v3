@@ -19,7 +19,7 @@ const ItemsList = async ({ searchParams }: { searchParams: any }) => {
 
   return (
     <div className="bg-slate-50 relative">
-      <div className="container flex gap-8 relative px-4 py-2">
+      <div className="container flex gap-8 relative x-4 md:px-8 py-2">
         <Filters primaryColor={meta?.vendor?.color_primary || ""} />
         <div className="flex-1 py-8">
           <h2 className="font-bold text-2xl">المنتجات</h2>

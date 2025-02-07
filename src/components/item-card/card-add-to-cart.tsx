@@ -7,13 +7,14 @@ import { FiPlus, FiMinus } from "react-icons/fi";
 import { getContrastColor } from "@/lib/getContrastColor";
 // types
 import { Item } from "@/types/types";
-// next-auth 
+// next-auth
 import { useSession } from "next-auth/react";
-// components 
+// components
 import LoginDialog from "../login-dialog/login-dialog";
-// lib 
+// lib
 import { getBaseUrl } from "@/api-calls/actions/getBaseUrl";
 import { toast } from "react-toastify";
+import { fireAlert } from "@/lib/fireAlert";
 type Props = {
   item: Item;
   primaryColor: string;
@@ -21,7 +22,7 @@ type Props = {
 };
 
 const CardAddToCart = ({ item, primaryColor, variant = "default" }: Props) => {
-  const {data:session,status} = useSession();
+  const { data: session, status } = useSession();
   const primaryColorContrast = getContrastColor(primaryColor);
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -36,31 +37,36 @@ const CardAddToCart = ({ item, primaryColor, variant = "default" }: Props) => {
     }
   };
   const handleAddToCart = async () => {
-   const baseUrl = await getBaseUrl();
-    if(!session?.user.accessToken){
+    const baseUrl = await getBaseUrl();
+    if (!session?.user.accessToken) {
       setOpenLoginDialog(true);
       return;
     }
     setLoading(true);
-    try{
-      const response = await fetch(`${baseUrl}/cart/add`,{
-        headers:{
-          Authorization:`Bearer ${session.user.accessToken}`
+    try {
+      const response = await fetch(`${baseUrl}/cart/add`, {
+        headers: {
+          Authorization: `Bearer ${session.user.accessToken}`,
+          "Content-Type": "application/json",
         },
-        body:JSON.stringify({
-          item_id:item.id,
-          quantity:quantity
-        })
+        method: "POST",
+        body: JSON.stringify({
+          item_id: item.id,
+          quantity: quantity,
+        }),
       });
       const data = await response.json();
-      if(data.id){
-        toast.success("تم اضافة المنتج الي السلة")
-        return;
-      }
-      throw data; 
-    }catch(error){
-      toast.error((error as any)?.message?.toString())
-    }finally {
+      fireAlert("تم اضافة المنتج الي السلة", "success");
+      setLoading(false);
+      return;
+    } catch (error) {
+      fireAlert(
+        (error as any)?.message?.toString() ||
+          (error as any)?.messages?.[0]?.toString() ||
+          "Try Again",
+        "error",
+      );
+    } finally {
       setLoading(false);
     }
   };
@@ -71,7 +77,7 @@ const CardAddToCart = ({ item, primaryColor, variant = "default" }: Props) => {
           onClick={handleAddToCart}
           className=" py-2 rounded-md font-semibold flex justify-center items-center gap-4 w-10 h-10 shadow-md"
           style={{ backgroundColor: primaryColor, color: primaryColorContrast }}
-          >
+        >
           {loading ? (
             <span
               className="loader"

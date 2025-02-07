@@ -27,13 +27,13 @@ const EditUserModal = () => {
   const [values, setValues] = useState<{
     img: string | undefined | null | File;
     name: string;
-    email: string;
-    phone: string;
+    // email: string;
+    // phone: string;
   }>({
     img: undefined,
     name: "",
-    email: "",
-    phone: "",
+    // email: "",
+    // phone: "",
   });
   const getUserData = async () => {
     if (session?.user.accessToken) {
@@ -41,8 +41,8 @@ const EditUserModal = () => {
       setValues({
         img: userData.img,
         name: userData.name || "",
-        email: userData.email || "",
-        phone: userData.phone ? `+${userData.phone}` : "+218",
+        // email: userData.email || "",
+        // phone: userData.phone ? `+${userData.phone}` : "+218",
       });
       setLoading(false);
     }
@@ -57,46 +57,46 @@ const EditUserModal = () => {
   }, [session]);
   const submitEdit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    console.log("values", values);
     const formData = new FormData();
-    for(let i in values){
-        if(values[i as keyof typeof values]){
-            formData.append(i, values[i as keyof typeof values] ?? "" )
-        }
+    for (let i in values) {
+      if (values[i as keyof typeof values]) {
+        formData.append(i, values[i as keyof typeof values] ?? "");
+      }
     }
     try {
-        const baseUrl = await getBaseUrl();
-        const response = await fetch(`${baseUrl}/me`, {
-            method:"PUT",
-            headers:{
-                Authorization:`Bearer ${session?.user.accessToken}`,
-            },
-            body:formData
-        });
-        const data:{id:string} = await response.json();
-        if(data.id){
-            toast.success("تم التعديل بنجاح");
-            
-        } else {
-            // toast.success("تم التعديل بنجاح");
-            throw data
-        }
-        
-    } catch (error:any) {
-        toast.error(error?.message?.toString())
+      const baseUrl = await getBaseUrl();
+      const response = await fetch(`${baseUrl}/me`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${session?.user.accessToken}`,
+        },
+        body: formData,
+      });
+      const data: { id: string } = await response.json();
+      if (data.id) {
+        toast.success("تم التعديل بنجاح");
+      } else {
+        // toast.success("تم التعديل بنجاح");
+        throw data;
+      }
+    } catch (error: any) {
+      toast.error(error?.message?.toString());
     }
   };
   return (
     <>
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogTrigger  asChild>
-          <button onClick={()=>setOpenDialog(true)} className="flex justify-center items-center gap-2 bg-slate-200 text-sm rounded-full h-12 w-12 absolute top-2 right-2">
+        <DialogTrigger asChild>
+          <button
+            onClick={() => setOpenDialog(true)}
+            className="flex justify-center items-center gap-2 bg-slate-200 text-sm rounded-full h-12 w-12 absolute top-2 right-2"
+          >
             <TbEdit size={32} />
           </button>
         </DialogTrigger>
         <DialogContent dir="rtl">
-          <DialogHeader className="text-start">
-            <DialogTitle>تعديل البيانات الشخصية</DialogTitle>
+          <DialogHeader >
+            <DialogTitle className="text-start">تعديل البيانات الشخصية</DialogTitle>
           </DialogHeader>
           {loading ? (
             <p>برجاء الانتظار</p>
@@ -118,7 +118,7 @@ const EditUserModal = () => {
                   setValues((prev) => ({ ...prev, name: e.target.value }))
                 }
               />
-              <Input
+              {/* <Input
                 type="email"
                 name="email"
                 placeholder="البريد الالكتروني"
@@ -136,7 +136,7 @@ const EditUserModal = () => {
                     setValues((prev) => ({ ...prev, phone: newValue }))
                   }
                 />
-              </div>
+              </div> */}
               <button
                 type="submit"
                 className="py-2  text-xl rounded-md"

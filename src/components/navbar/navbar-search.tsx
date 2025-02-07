@@ -9,10 +9,9 @@ const NavbarSearch = ({
   bg,
   iconColor,
   hideSearchBtn = false,
-  
 }: {
   bg: string;
-  iconColor:string;
+  iconColor: string;
   hideSearchBtn?: boolean;
 }) => {
   const searchParams = useSearchParams();
@@ -23,8 +22,8 @@ const NavbarSearch = ({
     router.push(`/items?q=${search}&${searchParams.toString()}`);
   return (
     <div
-      className="flex-1  flex items-center p-2 rounded-md border-[1px] border-slate-50/60"
-      style={{ background: bg , color:iconColor}}
+      className="flex-1  flex items-center p-2 rounded-md border-[1px] "
+      style={{ background: bg, color: iconColor, borderColor:`${iconColor}cc` }}
     >
       <input
         type="search"

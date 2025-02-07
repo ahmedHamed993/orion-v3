@@ -1,13 +1,10 @@
-# Orion V3 
+# Orion V3
 
 - login functionality test phone and otp
-- search funcionality 
+- search funcionality
 - toggle cart functionality
 - categories in home screen sort-by or specfic endpoint select ?
 - footer need meta data about the vendor
-
-
-
 
 > [!note]
 > Banner Ratio 21/9

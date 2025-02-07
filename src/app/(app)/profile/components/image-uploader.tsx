@@ -19,7 +19,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ value, onChange }) => {
   ) => {
     const file = event.target.files?.[0];
     if (!file) return;
-  
+
     try {
       const options = {
         maxSizeMB: 1,
@@ -27,20 +27,19 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ value, onChange }) => {
         useWebWorker: true,
       };
       const compressedBlob = await imageCompression(file, options);
-  
+
       // Convert Blob to File
       const compressedFile = new File([compressedBlob], file.name, {
         type: file.type,
         lastModified: Date.now(),
       });
-  
+
       setPreview(URL.createObjectURL(compressedFile));
       onChange(compressedFile);
     } catch (error) {
       console.error("Image compression failed", error);
     }
   };
-  
 
   return (
     <div className="flex flex-col items-center gap-3">

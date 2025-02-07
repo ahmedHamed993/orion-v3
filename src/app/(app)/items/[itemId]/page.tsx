@@ -26,7 +26,7 @@ const ItemDetails = async ({ params }: Props) => {
   if (!item) return <NoItems />;
   return (
     <div className="py-8">
-      <div className="container px-2">
+      <div className="container px-4 md:px-8">
         <div className="flex gap-8 flex-col md:flex-row">
           <div className="flex flex-col gap-4">
             <ItemImages image={item.img} images={item.images} />

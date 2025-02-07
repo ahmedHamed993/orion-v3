@@ -5,11 +5,11 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'sadeem-orion.com',
-        port: '',
-        pathname: '/**/**',
-        search: '',
+        protocol: "https",
+        hostname: "sadeem-orion.com",
+        port: "",
+        pathname: "/**/**",
+        search: "",
       },
     ],
   },
