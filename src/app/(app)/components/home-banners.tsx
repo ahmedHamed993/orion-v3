@@ -17,19 +17,21 @@ const HomeBanners = ({ banners }: { banners: Banner[] }) => {
     rtl: true,
   };
   return (
-    <div className="container ">
-      <Slider {...settings} className="">
-        {banners.map((banner) => (
-          <div className="bg-slate-400 w-full " key={banner.id}>
-            <img
-              className="w-full h-full object-cover"
-              style={{ aspectRatio: "21/9" }}
-              src={banner?.img}
-            />
-          </div>
-        ))}
-      </Slider>
-    </div>
+    banners && (
+      <div className="container ">
+        <Slider {...settings} className="">
+          {banners.map((banner) => (
+            <div className="bg-slate-400 w-full " key={banner.id}>
+              <img
+                className="w-full h-full object-cover"
+                style={{ aspectRatio: "21/9" }}
+                src={banner?.img}
+              />
+            </div>
+          ))}
+        </Slider>
+      </div>
+    )
   );
 };
 

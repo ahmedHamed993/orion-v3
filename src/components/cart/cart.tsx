@@ -23,14 +23,14 @@ type Props = {
 };
 const Cart = ({ open, setOpen }: Props) => {
   const [primaryColor, setPrimaryColor] = useState("#101010");
-  
-  const getPrimaryColor = async ()=>{
+
+  const getPrimaryColor = async () => {
     const meta = await getMeta();
     setPrimaryColor(meta?.vendor?.color_primary || "#101010");
-  }
-  useEffect(()=>{
+  };
+  useEffect(() => {
     getPrimaryColor();
-  },[])
+  }, []);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent className="flex flex-col ">
@@ -46,7 +46,10 @@ const Cart = ({ open, setOpen }: Props) => {
           <Link
             className="w-full  text-center bg-slate-200 py-2 rounded-md "
             href="/checkout"
-            style={{backgroundColor:primaryColor, color:getContrastColor(primaryColor)}}
+            style={{
+              backgroundColor: primaryColor,
+              color: getContrastColor(primaryColor),
+            }}
           >
             اتمام الشراء
           </Link>

@@ -6,6 +6,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "www.sadeem-orion.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "sadeem-orion.com",
         port: "",
         pathname: "/**/**",

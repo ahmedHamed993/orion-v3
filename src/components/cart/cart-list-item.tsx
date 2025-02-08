@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-// api calls 
+// api calls
 import { getBaseUrl } from "@/api-calls/actions/getBaseUrl";
-// next-auth 
+// next-auth
 import { useSession } from "next-auth/react";
-// icons 
+// icons
 import { FiPlus, FiMinus } from "react-icons/fi";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-// utils 
+// utils
 import { fireAlert } from "@/lib/fireAlert";
 import { getContrastColor } from "@/lib/getContrastColor";
-// calls 
+// calls
 import { getMeta } from "@/api-calls/meta";
-// types 
+// types
 import { Item } from "@/types/types";
 type Props = {
   item: Item;
@@ -21,14 +21,14 @@ const CartListItem = ({ item }: Props) => {
   const [quantity, setQuantity] = useState(item.quantity);
   const [primaryColor, setPrimaryColor] = useState("#101010");
   const [deleted, setDeleted] = useState(false);
-  const {data:session} = useSession();
-  
-  const getPrimaryColor = async ()=>{
+  const { data: session } = useSession();
+
+  const getPrimaryColor = async () => {
     const meta = await getMeta();
     setPrimaryColor(meta?.vendor?.color_primary || "#101010");
-  }
+  };
 
-  const deleteItem = async ()=>{
+  const deleteItem = async () => {
     const baseUrl = await getBaseUrl();
     try {
       const response = await fetch(`${baseUrl}/cart/delete`, {
@@ -49,9 +49,9 @@ const CartListItem = ({ item }: Props) => {
         "error",
       );
     }
-  }
+  };
 
-  const editQuantity = async (newQuantity:number)=>{
+  const editQuantity = async (newQuantity: number) => {
     const baseUrl = await getBaseUrl();
     try {
       const response = await fetch(`${baseUrl}/cart/edit`, {
@@ -76,12 +76,12 @@ const CartListItem = ({ item }: Props) => {
         "error",
       );
     }
-  }
+  };
 
   const incQuantity = () => {
     const newQuantity = quantity + 1;
     setQuantity(newQuantity);
-    editQuantity(newQuantity)
+    editQuantity(newQuantity);
   };
 
   const decQuantity = () => {
@@ -92,11 +92,13 @@ const CartListItem = ({ item }: Props) => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getPrimaryColor();
-  },[])
+  }, []);
 
-  return deleted ? <></> : (
+  return deleted ? (
+    <></>
+  ) : (
     <div className="flex items-center gap-2 py-2 ">
       <img
         src={item.img}
@@ -115,7 +117,10 @@ const CartListItem = ({ item }: Props) => {
             <button
               onClick={incQuantity}
               className="flex justify-center items-center h-6 w-6 bg-slate-900 text-slate-50 rounded-full"
-              style={{backgroundColor:primaryColor, color:getContrastColor(primaryColor)}}
+              style={{
+                backgroundColor: primaryColor,
+                color: getContrastColor(primaryColor),
+              }}
             >
               <FiPlus />
             </button>
@@ -128,13 +133,16 @@ const CartListItem = ({ item }: Props) => {
             <button
               onClick={decQuantity}
               className="flex justify-center items-center h-6 w-6 bg-slate-900 text-slate-50 rounded-full"
-              style={{backgroundColor:primaryColor, color:getContrastColor(primaryColor)}}
+              style={{
+                backgroundColor: primaryColor,
+                color: getContrastColor(primaryColor),
+              }}
             >
               <FiMinus />
             </button>
           </div>
           <button className="text-red-600" onClick={deleteItem}>
-            <MdOutlineDeleteOutline className="text-red-700" size={24}/>
+            <MdOutlineDeleteOutline className="text-red-700" size={24} />
           </button>
         </div>
       </div>

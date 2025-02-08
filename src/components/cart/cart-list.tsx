@@ -13,16 +13,16 @@ import { getCart } from "@/api-calls/cart/getCart";
 const CartList = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const getCartItems = async () => {
     const items = await getCart();
     setLoading(false);
     setItems(items?.items);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getCartItems();
-  },[])
+  }, []);
 
   return loading ? (
     <div className="flex flex-col divide-y-2 divide-y-slate-300 max-w-full">

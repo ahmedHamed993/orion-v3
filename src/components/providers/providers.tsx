@@ -3,6 +3,7 @@ import { SessionProvider } from "next-auth/react";
 import React from "react";
 import { ToastContainer, Slide } from "react-toastify";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
+import { ErrorBoundaryHandler } from "next/dist/client/components/error-boundary";
 
 type Props = {
   children: React.ReactNode;

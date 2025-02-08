@@ -127,3 +127,13 @@ export type Items = {
   meta: MetaData;
   data: Item[];
 } | null;
+
+export type Address = {
+  id: string;
+  name: string;
+  details: string;
+  location: {
+    type: "Point";
+    coordinates: [number, number];
+  };
+};

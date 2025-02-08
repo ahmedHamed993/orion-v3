@@ -95,8 +95,10 @@ const EditUserModal = () => {
           </button>
         </DialogTrigger>
         <DialogContent dir="rtl">
-          <DialogHeader >
-            <DialogTitle className="text-start">تعديل البيانات الشخصية</DialogTitle>
+          <DialogHeader>
+            <DialogTitle className="text-start">
+              تعديل البيانات الشخصية
+            </DialogTitle>
           </DialogHeader>
           {loading ? (
             <p>برجاء الانتظار</p>

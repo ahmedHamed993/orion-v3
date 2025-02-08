@@ -23,7 +23,11 @@ const NavbarSearch = ({
   return (
     <div
       className="flex-1  flex items-center p-2 rounded-md border-[1px] "
-      style={{ background: bg, color: iconColor, borderColor:`${iconColor}cc` }}
+      style={{
+        background: bg,
+        color: iconColor,
+        borderColor: `${iconColor}cc`,
+      }}
     >
       <input
         type="search"
