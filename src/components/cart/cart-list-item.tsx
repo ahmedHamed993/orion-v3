@@ -15,9 +15,10 @@ import { getMeta } from "@/api-calls/meta";
 import { Item } from "@/types/types";
 type Props = {
   item: Item;
+  refetch?: () => void;
 };
 
-const CartListItem = ({ item }: Props) => {
+const CartListItem = ({ item, refetch }: Props) => {
   const [quantity, setQuantity] = useState(item.quantity);
   const [primaryColor, setPrimaryColor] = useState("#101010");
   const [deleted, setDeleted] = useState(false);
@@ -31,14 +32,19 @@ const CartListItem = ({ item }: Props) => {
   const deleteItem = async () => {
     const baseUrl = await getBaseUrl();
     try {
-      const response = await fetch(`${baseUrl}/cart/delete`, {
+      const response = await fetch(`${baseUrl}/cart/add`, {
         headers: {
           Authorization: `Bearer ${session?.user.accessToken}`,
           "Content-Type": "application/json",
         },
         method: "POST",
+        body: JSON.stringify({
+          item_id: item.id,
+          quantity: 0,
+        }),
       });
       const data = await response.json();
+      if (refetch) refetch();
       setDeleted(true);
       return;
     } catch (error) {
@@ -54,7 +60,7 @@ const CartListItem = ({ item }: Props) => {
   const editQuantity = async (newQuantity: number) => {
     const baseUrl = await getBaseUrl();
     try {
-      const response = await fetch(`${baseUrl}/cart/edit`, {
+      const response = await fetch(`${baseUrl}/cart/add`, {
         headers: {
           Authorization: `Bearer ${session?.user.accessToken}`,
           "Content-Type": "application/json",
@@ -67,6 +73,7 @@ const CartListItem = ({ item }: Props) => {
       });
       const data = await response.json();
       // fireAlert("تم اضافة المنتج الي السلة", "success");
+      if (refetch) refetch();
       return;
     } catch (error) {
       fireAlert(

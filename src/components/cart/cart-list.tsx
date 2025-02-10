@@ -10,7 +10,7 @@ import Image from "next/image";
 // calls
 import { getCart } from "@/api-calls/cart/getCart";
 
-const CartList = () => {
+const CartList = ({ refetch }: { refetch?: () => void }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -42,7 +42,7 @@ const CartList = () => {
     <div className="flex flex-col divide-y-[1px] divide-y-slate-300">
       {items?.length ? (
         items.map((item: Item) => {
-          return <CartListItem key={item.id} item={item} />;
+          return <CartListItem key={item.id} item={item} refetch={refetch} />;
         })
       ) : (
         <Image

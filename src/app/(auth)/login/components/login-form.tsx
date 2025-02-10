@@ -14,8 +14,8 @@ import {
 import LoginImage from "./login-image";
 import { getContrastColor } from "@/lib/getContrastColor";
 import { getOtp } from "@/api-calls/auth/getOtp";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { fireAlert } from "@/lib/fireAlert";
 type Props = {
   logo: string;
   primaryColor: string;
@@ -32,19 +32,16 @@ const LoginForm = ({ logo, primaryColor }: Props) => {
   const login: SubmitHandler<Record<string, any>> = async (values) => {
     try {
       const otpResponse = await getOtp(values?.phone);
-      console.log(otpResponse);
       if (otpResponse?.status === "success") {
         setPhase("otp");
-        toast.success(otpResponse?.message);
-        toast.success(otpResponse?.pin, {
-          autoClose: 10000,
-        });
+        fireAlert(otpResponse?.message, "success");
+        fireAlert(otpResponse?.pin, "success");
         setPhase("otp");
         return;
       }
       throw otpResponse;
     } catch (error) {
-      toast.error((error as any)?.message);
+      fireAlert((error as any)?.message, "error");
     }
   };
 
@@ -67,10 +64,10 @@ const LoginForm = ({ logo, primaryColor }: Props) => {
       callbackUrl: "/login",
     });
     if (!signInResponse?.ok) {
-      toast.error(signInResponse?.error);
+      fireAlert(signInResponse?.error?.toString() ?? "حدث خطأ", "error");
     } else {
       router.push("/");
-      toast.success("welcome");
+      fireAlert("مرحبا بك", "success");
     }
   };
 

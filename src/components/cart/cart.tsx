@@ -16,12 +16,14 @@ import Link from "next/link";
 import CartList from "./cart-list";
 import { getMeta } from "@/api-calls/meta";
 import { getContrastColor } from "@/lib/getContrastColor";
+import { useRouter } from "next/navigation";
 
 type Props = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 };
 const Cart = ({ open, setOpen }: Props) => {
+  const router = useRouter();
   const [primaryColor, setPrimaryColor] = useState("#101010");
 
   const getPrimaryColor = async () => {
@@ -43,16 +45,19 @@ const Cart = ({ open, setOpen }: Props) => {
         </div>
         <DropdownMenuSeparator />
         <SheetFooter className="p-0">
-          <Link
+          <button
             className="w-full  text-center bg-slate-200 py-2 rounded-md "
-            href="/checkout"
+            onClick={() => {
+              router.push("/checkout");
+              setOpen(false);
+            }}
             style={{
               backgroundColor: primaryColor,
               color: getContrastColor(primaryColor),
             }}
           >
             اتمام الشراء
-          </Link>
+          </button>
         </SheetFooter>
       </SheetContent>
     </Sheet>
