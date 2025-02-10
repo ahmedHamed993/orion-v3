@@ -82,7 +82,7 @@ const CheckoutForm = () => {
 
     fetchData();
   }, []);
-
+  console.log('errors',errors)
   const onSubmit = async (values: FormValues) => {
     console.log(values);
     if (!selectedAddress || !values?.schedule_id || !values?.payment_method) {
@@ -218,7 +218,9 @@ const CheckoutForm = () => {
         <Input
           className="!py-6"
           type="number"
-          {...form.register("driver_tip")}
+          // {...form.register("driver_tip")}
+          value={watch("driver_tip")}
+          onChange={(e)=>setValue('driver_tip', Number(e.target.value))}
         />
       </FormSection>
 
