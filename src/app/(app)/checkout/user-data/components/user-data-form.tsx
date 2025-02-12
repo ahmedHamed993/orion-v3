@@ -92,7 +92,6 @@ const UserDataForm = () => {
   }, []);
 
   const onSubmit = async (values: FormValues) => {
-    console.log(values);
     try {
       const baseUrl = await getBaseUrl();
       const formattedData:any = {
@@ -115,32 +114,10 @@ const UserDataForm = () => {
       const data = await response.json();
       
       if (data?.id) {
-        try{
-          
-          const response = await fetch(`${baseUrl}/cart/checkout`, {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${session?.user?.accessToken}`,
-              "Content-Type": "application/json",
-            },
-            body:JSON.stringify({
-              customer_phone:session?.user?.phone,
-              customer_name:session?.user?.name,
-            })
-          });
-          const data = await response.json();
-          if(data.id){
-
-            fireAlert("تم استلام طلبك بنجاح", "success");
-            router.push("/");
-            return;
-          }
-          throw data;
-        }catch(error){
-          fireAlert("حدث خطأ", "error");
-        }
+        fireAlert("تم استلام طلبك بنجاح", "success");
+        router.push("/checkout/review");
+        return;
       }
-      
       throw data;
     } catch (error) {
       fireAlert((error as any)?.message, "error");
@@ -154,136 +131,138 @@ const UserDataForm = () => {
   return (
     <div>
       <div className="container px-4 py-8">
-      <form className="flex gap-4 " onSubmit={handleSubmit(onSubmit)}>
-        <div className="w-full flex flex-col gap-4">
-          <FormSection title="العنوان">
-            <Select
-              dir="rtl"
-              value={selectedAddress}
-              onValueChange={(value) => {
-                setSelectedAddress(value);
-                const currentAddress = addresses.find((i: any) => i.id === value);
-                setValue("address_details", (currentAddress as any)?.details ?? "");
-                setValue("address_location", (currentAddress as any)?.location ?? "");
-              }}
-            >
-              <SelectTrigger className="w-full py-6">
-                <SelectValue placeholder="العنوان" />
-              </SelectTrigger>
-              <SelectContent>
-                {addresses?.map((address: any) => (
-                  <SelectItem key={address.id} value={address.id}>
-                    {address.name}
-                  </SelectItem>
+        <form className="flex flex-col gap-4 " onSubmit={handleSubmit(onSubmit)}>
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="w-full flex flex-col gap-4">
+              <FormSection title="العنوان">
+                <Select
+                  dir="rtl"
+                  value={selectedAddress}
+                  onValueChange={(value) => {
+                    setSelectedAddress(value);
+                    const currentAddress = addresses.find((i: any) => i.id === value);
+                    setValue("address_details", (currentAddress as any)?.details ?? "");
+                    setValue("address_location", (currentAddress as any)?.location ?? "");
+                  }}
+                >
+                  <SelectTrigger className="w-full py-6">
+                    <SelectValue placeholder="العنوان" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {addresses?.map((address: any) => (
+                      <SelectItem key={address.id} value={address.id}>
+                        {address.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormSection>
+
+              <FormSection title="طريقة الدفع">
+                <Select
+                  dir="rtl"
+                  value={watch("payment_method") ? JSON.stringify(watch("payment_method")) : undefined}
+                  onValueChange={(value) => {
+                    setValue("payment_method", value ? JSON.parse(value) : null);
+                  }}
+                >
+                  <SelectTrigger className="w-full py-6">
+                    <SelectValue placeholder="طريقة الدفع" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {paymentMethods?.map((method: any) => (
+                      <SelectItem key={method.id} value={JSON.stringify(method)}>
+                        {method.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormSection>
+
+              <FormSection title="الموعد">
+                <Select
+                  dir="rtl"
+                  value={watch("schedule_id") ?? undefined}
+                  onValueChange={(value) => {
+                    setValue("schedule_id", value);
+                    const dates = JSON.parse(value).available_dates || [];
+                    setAvailableDates(dates);
+                    setValue("delivery_date", dates[0]?.date);
+                  }}
+                >
+                  <SelectTrigger className="w-full py-6">
+                    <SelectValue placeholder="الموعد" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(checkoutData as any)?.available_schedules?.map((schedule: any) => (
+                      <SelectItem key={schedule.id} value={JSON.stringify(schedule)}>
+                        <div className="flex flex-col text-sm gap-1">
+                          {schedule.start_at} - {schedule.end_at}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormSection>
+
+              <RadioGroup
+                dir="rtl"
+                value={watch("delivery_date")}
+                onValueChange={(value: string) => setValue("delivery_date", value)}
+                className="grid grid-cols-3"
+              >
+                {availableDates.map((date: any) => (
+                  <div key={date.date} className="flex items-center gap-2">
+                    <RadioGroupItem value={date.date} id={date.date} />
+                    <Label htmlFor={date.date}>{date.date}</Label>
+                  </div>
                 ))}
-              </SelectContent>
-            </Select>
-          </FormSection>
+              </RadioGroup>
 
-          <FormSection title="طريقة الدفع">
-            <Select
-              dir="rtl"
-              value={watch("payment_method") ? JSON.stringify(watch("payment_method")) : undefined}
-              onValueChange={(value) => {
-                setValue("payment_method", value ? JSON.parse(value) : null);
-              }}
-            >
-              <SelectTrigger className="w-full py-6">
-                <SelectValue placeholder="طريقة الدفع" />
-              </SelectTrigger>
-              <SelectContent>
-                {paymentMethods?.map((method: any) => (
-                  <SelectItem key={method.id} value={JSON.stringify(method)}>
-                    {method.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </FormSection>
+              <FormSection title="اكرامية للسائق">
+                <Input
+                  className="!py-6"
+                  type="number"
+                  // {...form.register("driver_tip")}
+                  value={watch("driver_tip")}
+                  onChange={(e)=>setValue('driver_tip', Number(e.target.value))}
+                />
+              </FormSection>
 
-          <FormSection title="الموعد">
-            <Select
-              dir="rtl"
-              value={watch("schedule_id") ?? undefined}
-              onValueChange={(value) => {
-                setValue("schedule_id", value);
-                const dates = JSON.parse(value).available_dates || [];
-                setAvailableDates(dates);
-                setValue("delivery_date", dates[0]?.date);
-              }}
-            >
-              <SelectTrigger className="w-full py-6">
-                <SelectValue placeholder="الموعد" />
-              </SelectTrigger>
-              <SelectContent>
-                {(checkoutData as any)?.available_schedules?.map((schedule: any) => (
-                  <SelectItem key={schedule.id} value={JSON.stringify(schedule)}>
-                    <div className="flex flex-col text-sm gap-1">
-                      {schedule.start_at} - {schedule.end_at}
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </FormSection>
-
-          <RadioGroup
-            dir="rtl"
-            value={watch("delivery_date")}
-            onValueChange={(value: string) => setValue("delivery_date", value)}
-            className="grid grid-cols-3"
-          >
-            {availableDates.map((date: any) => (
-              <div key={date.date} className="flex items-center gap-2">
-                <RadioGroupItem value={date.date} id={date.date} />
-                <Label htmlFor={date.date}>{date.date}</Label>
-              </div>
-            ))}
-          </RadioGroup>
-
-          <FormSection title="اكرامية للسائق">
-            <Input
-              className="!py-6"
-              type="number"
-              // {...form.register("driver_tip")}
-              value={watch("driver_tip")}
-              onChange={(e)=>setValue('driver_tip', Number(e.target.value))}
-            />
-          </FormSection>
-
-          <FormSection title="ملاحظات اضافية">
-            <Textarea
-              className="py-6"
-              {...form.register("details")}
-            />
-          </FormSection>
-        </div>
-        <div className="w-full lg:w-96 lg:min-w-96 flex flex-col gap-4">
-          <FormSection title="تفاصيل العنوان">
-            <Input
-              className="py-6"
-              type="text"
-              // {...form.register("driver_tip")}
-              value={watch("address_details")}
-              onChange={(e)=>setValue('address_details', e.target.value)}
-            />
-          </FormSection>
-          <PinLocation
-            defaultLocation={{
-              lat: watch("address_location").coordinates[1] ?? 0,
-              lng: watch("address_location").coordinates[0] ?? 0,
-            }}
-            handlePositionChanging={(lat: number, lng: number) => {
-              setValue("address_location", {
-                type: "Point",
-                coordinates: [lng, lat],
-              });
-            }}
-          />
-        </div>
-       
-      </form>
-    </div>
+              <FormSection title="ملاحظات اضافية">
+                <Textarea
+                  className="py-6"
+                  {...form.register("details")}
+                />
+              </FormSection>
+            </div>
+            <div className="w-full lg:w-96 lg:min-w-96 flex flex-col gap-4">
+              <FormSection title="تفاصيل العنوان">
+                <Input
+                  className="py-6"
+                  type="text"
+                  // {...form.register("driver_tip")}
+                  value={watch("address_details")}
+                  onChange={(e)=>setValue('address_details', e.target.value)}
+                />
+              </FormSection>
+              <PinLocation
+                defaultLocation={{
+                  lat: watch("address_location").coordinates[1] ?? 0,
+                  lng: watch("address_location").coordinates[0] ?? 0,
+                }}
+                handlePositionChanging={(lat: number, lng: number) => {
+                  setValue("address_location", {
+                    type: "Point",
+                    coordinates: [lng, lat],
+                  });
+                }}
+              />
+            </div>
+          </div>
+          <button type='submit' className="py-2 border-[1px] border-slate-400 rounded-md">تاكيد الطلب</button>
+        </form>
+      </div>
     </div>
 
   )
