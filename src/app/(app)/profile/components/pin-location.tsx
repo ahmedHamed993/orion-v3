@@ -1,5 +1,5 @@
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type Props = {
   defaultLocation: {
@@ -11,6 +11,7 @@ type Props = {
 const containerStyle = {
   width: "100%",
   height: "400px",
+  borderRadius:"8px",
 };
 
 const PinLocation = ({ defaultLocation, handlePositionChanging }: Props) => {
@@ -29,6 +30,11 @@ const PinLocation = ({ defaultLocation, handlePositionChanging }: Props) => {
 
     setMap(map);
   }, []);
+
+  useEffect(() => {
+    setCenter(defaultLocation); // Update marker when address changes
+  }, [defaultLocation]);
+
 
   const onUnmount = useCallback(function callback(map: any) {
     setMap(null);

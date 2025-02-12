@@ -69,7 +69,6 @@ const CheckoutForm = () => {
           getUserAddress(),
           getPaymentMethods()
         ]);
-
         setCheckoutData(checkoutResponse);
         setAddresses(addressesResponse?.data ?? []);
         setPaymentMethods(methodsResponse?.data ?? []);
@@ -82,19 +81,13 @@ const CheckoutForm = () => {
 
     fetchData();
   }, []);
-  console.log('errors',errors)
   const onSubmit = async (values: FormValues) => {
     console.log(values);
-    if (!selectedAddress || !values?.schedule_id || !values?.payment_method) {
-      fireAlert("برجاء ملئ جميع البيانات", "warning");
-      return;
-    }
-
     try {
       const baseUrl = await getBaseUrl();
       const formattedData:any = {
         ...values,
-        schedule: { id: JSON.parse(values.schedule_id).id },
+        schedule: { id: values?.schedule_id ? JSON.parse(values?.schedule_id ?? "{}").id : undefined },
         payment_method: { id: values.payment_method?.id }
       };
 
@@ -112,9 +105,30 @@ const CheckoutForm = () => {
       const data = await response.json();
       
       if (data?.id) {
-        fireAlert("تم استلام طلبك بنجاح", "success");
-        router.push("/");
-        return;
+        try{
+          
+          const response = await fetch(`${baseUrl}/cart/checkout`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${session?.user?.accessToken}`,
+              "Content-Type": "application/json",
+            },
+            body:JSON.stringify({
+              customer_phone:session?.user?.phone,
+              customer_name:session?.user?.name,
+            })
+          });
+          const data = await response.json();
+          if(data.id){
+
+            fireAlert("تم استلام طلبك بنجاح", "success");
+            router.push("/");
+            return;
+          }
+          throw data;
+        }catch(error){
+          fireAlert("حدث خطأ", "error");
+        }
       }
       
       throw data;
@@ -214,7 +228,7 @@ const CheckoutForm = () => {
         ))}
       </RadioGroup>
 
-      <FormSection title="مبلغ اضافي للسائق">
+      <FormSection title="اكرامية للسائق">
         <Input
           className="!py-6"
           type="number"

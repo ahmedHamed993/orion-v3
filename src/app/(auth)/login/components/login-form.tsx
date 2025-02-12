@@ -24,19 +24,20 @@ const LoginForm = ({ logo, primaryColor }: Props) => {
   const [phase, setPhase] = useState<"phone" | "otp">("phone");
   const contrastColor = getContrastColor(primaryColor);
   const router = useRouter();
+
   const { register, handleSubmit, setValue, getValues } = useForm({
     defaultValues: {
       phone: "",
     },
   });
+
   const login: SubmitHandler<Record<string, any>> = async (values) => {
     try {
       const otpResponse = await getOtp(values?.phone);
-      if (otpResponse?.status === "success") {
+      console.log("otp response",otpResponse);
+      if (!otpResponse?.status || otpResponse?.exists == true) {
         setPhase("otp");
         fireAlert(otpResponse?.message, "success");
-        fireAlert(otpResponse?.pin, "success");
-        setPhase("otp");
         return;
       }
       throw otpResponse;
@@ -55,6 +56,7 @@ const LoginForm = ({ logo, primaryColor }: Props) => {
       otp: "",
     },
   });
+
   const submitOtp: SubmitHandler<Record<string, any>> = async (values) => {
     const data = { ...values };
     data["phone"] = getValues("phone");

@@ -54,7 +54,7 @@ const Profile = async () => {
         {/* orders  */}
         <div className="min-h-screen bg-slate-50 flex-1 rounded-md  w-full p-4 shadow-sm">
           <h6>طلباتك</h6>
-          <UserOrders />
+          {/* <UserOrders /> */}
         </div>
       </div>
     </div>
