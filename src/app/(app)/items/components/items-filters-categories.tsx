@@ -26,6 +26,7 @@ const ItemsFilterCategories = ({ filters, handleCategoryChange }: Props) => {
   };
   const getCategories = async () => {
     const allCategories = await getAllCategories();
+    console.log('all categories',allCategories);
     setCategories(allCategories || []);
     setLoading(false);
   };

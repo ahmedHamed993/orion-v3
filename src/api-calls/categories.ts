@@ -17,12 +17,12 @@ export const getCategories: GetCategories = async (filterStr: string = "") => {
 export const getAllCategories = async () => {
   try {
     const response = await fetch(
-      `${process.env.BASE_URL}/categories?filters=depth:gte:1&all`,
+      `${process.env.BASE_URL}/categories?filters=depth:gte:2&all`,
     );
     // const response = await fetch(`${process.env.BASE_URL}/categories?all`);
     const data = await response.json();
     console.log("categories",data);
-    const final = structureCategories(data.data);
+    const final = buildHierarchy(data.data);
     return final;
   } catch (error) {
     return null;
@@ -30,33 +30,80 @@ export const getAllCategories = async () => {
 };
 
 export const structureCategories = async (categories: Category[]) => {
+  console.log('categories',categories)
   const categoryMap = new Map();
+    // Initialize the map with all categories
+    categories.forEach(category => {
+        categoryMap.set(category.id, { ...category, children: [] });
+    });
 
-  // First, create a map of all categories
-  categories?.forEach((category) => {
-    if(category.depth == 2){
-      categoryMap.set(category.id, {
-        id: category.id,
-        name: category.name,
-        children: [],
-      });
-    }
-  });
+    // Build the nested structure
+    const nestedCategories :any= [];
+    categories.forEach(category => {
+        const parentId = (category as any).parent?.id;
 
-  const final: any[] = [];
+        if (parentId) {
+            // If the category has a parent, add it to the parent's children array
+            const parent = categoryMap.get(parentId);
+            if (parent) {
+                parent.children.push(categoryMap.get(category.id));
+            }
+        } else {
+            // If the category has no parent, it's a root category
+            nestedCategories.push(categoryMap.get(category.id));
+        }
+    });
+    
+    return nestedCategories;
 
-  categories?.forEach((category) => {
-    if ( category.parent_id !== category.id && category.depth > 2) {
-      // If the category has a parent, push it into its parent's children array
-      const parentCategory = categoryMap.get(category.parent_id);
-      if (parentCategory) {
-        parentCategory.children.push(categoryMap.get(category.id));
-      }
-    } else {
-      // If it has no valid parent, it is a root category
-      final.push(categoryMap.get(category.id));
-    }
-  });
-
-  return final;
 };
+
+interface Item {
+  id: string;
+  name: string;
+  img: string | null;
+  thumb: string | null;
+  depth: number;
+  sort: number;
+  is_disabled: boolean;
+  is_featured: boolean;
+  spiza_id: string | null;
+  created_at: string;
+  updated_at: string;
+  parent: {
+      id: string | null;
+      name: string | null;
+  };
+  super_parent: {
+      id: string | null;
+      name: string | null;
+  };
+  vendor: {
+      id: string | null;
+      slug: string | null;
+      name: string | null;
+  };
+  children?: Item[];
+}
+
+function buildHierarchy(items: Item[]): Item[] {
+  const itemMap: { [key: string]: Item } = {};
+  const roots: Item[] = [];
+
+  // Create a map of items by their id
+  items.forEach(item => {
+      itemMap[item.id] = { ...item, children: [] };
+  });
+
+  // Build the hierarchy
+  items.forEach(item => {
+      if (item.parent.id && itemMap[item.parent.id]) {
+          itemMap[item.parent.id].children!.push(itemMap[item.id]);
+      } else {
+          roots.push(itemMap[item.id]);
+      }
+  });
+
+  return roots;
+}
+
