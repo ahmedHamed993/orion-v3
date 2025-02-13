@@ -17,10 +17,11 @@ export const getCategories: GetCategories = async (filterStr: string = "") => {
 export const getAllCategories = async () => {
   try {
     const response = await fetch(
-      `${process.env.BASE_URL}/categories?filters=depth:gt:1&all`,
+      `${process.env.BASE_URL}/categories?filters=depth:gte:1&all`,
     );
     // const response = await fetch(`${process.env.BASE_URL}/categories?all`);
     const data = await response.json();
+    console.log("categories",data);
     const final = structureCategories(data.data);
     return final;
   } catch (error) {
@@ -33,17 +34,19 @@ export const structureCategories = async (categories: Category[]) => {
 
   // First, create a map of all categories
   categories?.forEach((category) => {
-    categoryMap.set(category.id, {
-      id: category.id,
-      name: category.name,
-      children: [],
-    });
+    if(category.depth == 2){
+      categoryMap.set(category.id, {
+        id: category.id,
+        name: category.name,
+        children: [],
+      });
+    }
   });
 
   const final: any[] = [];
 
   categories?.forEach((category) => {
-    if (category.parent_id && category.parent_id !== category.id) {
+    if ( category.parent_id !== category.id && category.depth > 2) {
       // If the category has a parent, push it into its parent's children array
       const parentCategory = categoryMap.get(category.parent_id);
       if (parentCategory) {

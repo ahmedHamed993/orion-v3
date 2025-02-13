@@ -6,7 +6,7 @@ export const getUserOrders = async ()=> {
     const session = await getServerSession(authOptions);
     const baseUrl = await getBaseUrl();
     try {
-        const response  = await fetch(`${baseUrl}/orders`, {
+        const response  = await fetch(`${baseUrl}/orders?all`, {
             headers : {
                 Authorization:`Bearer ${session?.user?.accessToken}`
             },
@@ -14,7 +14,8 @@ export const getUserOrders = async ()=> {
         const data = await response.json();
         return data;
     }catch(error){
-        console.log(error)
-        return null;
+        // console.log(error)
+        // return null;
+        throw error
     }
 }
