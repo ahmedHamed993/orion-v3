@@ -27,7 +27,7 @@ const ItemsFilterCategories = ({ filters, handleCategoryChange }: Props) => {
   const getCategories = async () => {
     const allCategories = await getAllCategories();
     console.log('all categories',allCategories);
-    setCategories(allCategories || []);
+    setCategories(allCategories as any|| []);
     setLoading(false);
   };
   useEffect(() => {
