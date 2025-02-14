@@ -8,7 +8,13 @@ import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { getCheckout } from "@/api-calls/checkout/checkout";
@@ -35,7 +41,7 @@ type FormValues = z.infer<typeof schema>;
 const CheckoutForm = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  
+
   const [isLoading, setIsLoading] = useState(true);
   const [checkoutData, setCheckoutData] = useState(null);
   const [addresses, setAddresses] = useState([]);
@@ -59,16 +65,22 @@ const CheckoutForm = () => {
     },
   });
 
-  const { handleSubmit, setValue, watch, formState:{errors} } = form;
+  const {
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = form;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [checkoutResponse, addressesResponse, methodsResponse] = await Promise.all([
-          getCheckout(),
-          getUserAddress(),
-          getPaymentMethods()
-        ]);
+        const [checkoutResponse, addressesResponse, methodsResponse] =
+          await Promise.all([
+            getCheckout(),
+            getUserAddress(),
+            getPaymentMethods(),
+          ]);
         setCheckoutData(checkoutResponse);
         setAddresses(addressesResponse?.data ?? []);
         setPaymentMethods(methodsResponse?.data ?? []);
@@ -82,13 +94,16 @@ const CheckoutForm = () => {
     fetchData();
   }, []);
   const onSubmit = async (values: FormValues) => {
-    console.log(values);
     try {
       const baseUrl = await getBaseUrl();
-      const formattedData:any = {
+      const formattedData: any = {
         ...values,
-        schedule: { id: values?.schedule_id ? JSON.parse(values?.schedule_id ?? "{}").id : undefined },
-        payment_method: { id: values.payment_method?.id }
+        schedule: {
+          id: values?.schedule_id
+            ? JSON.parse(values?.schedule_id ?? "{}").id
+            : undefined,
+        },
+        payment_method: { id: values.payment_method?.id },
       };
 
       delete formattedData.schedule_id;
@@ -103,34 +118,32 @@ const CheckoutForm = () => {
       });
 
       const data = await response.json();
-      
+
       if (data?.id) {
-        try{
-          
+        try {
           const response = await fetch(`${baseUrl}/cart/checkout`, {
             method: "POST",
             headers: {
               Authorization: `Bearer ${session?.user?.accessToken}`,
               "Content-Type": "application/json",
             },
-            body:JSON.stringify({
-              customer_phone:session?.user?.phone,
-              customer_name:session?.user?.name,
-            })
+            body: JSON.stringify({
+              customer_phone: session?.user?.phone,
+              customer_name: session?.user?.name,
+            }),
           });
           const data = await response.json();
-          if(data.id){
-
+          if (data.id) {
             fireAlert("تم استلام طلبك بنجاح", "success");
             router.push("/");
             return;
           }
           throw data;
-        }catch(error){
+        } catch (error) {
           fireAlert("حدث خطأ", "error");
         }
       }
-      
+
       throw data;
     } catch (error) {
       fireAlert((error as any)?.message, "error");
@@ -151,7 +164,10 @@ const CheckoutForm = () => {
             setSelectedAddress(value);
             const currentAddress = addresses.find((i: any) => i.id === value);
             setValue("address_details", (currentAddress as any)?.details ?? "");
-            setValue("address_location", (currentAddress as any)?.location ?? "");
+            setValue(
+              "address_location",
+              (currentAddress as any)?.location ?? "",
+            );
           }}
         >
           <SelectTrigger className="w-full py-6">
@@ -170,7 +186,11 @@ const CheckoutForm = () => {
       <FormSection title="طريقة الدفع">
         <Select
           dir="rtl"
-          value={watch("payment_method") ? JSON.stringify(watch("payment_method")) : undefined}
+          value={
+            watch("payment_method")
+              ? JSON.stringify(watch("payment_method"))
+              : undefined
+          }
           onValueChange={(value) => {
             setValue("payment_method", value ? JSON.parse(value) : null);
           }}
@@ -203,13 +223,15 @@ const CheckoutForm = () => {
             <SelectValue placeholder="الموعد" />
           </SelectTrigger>
           <SelectContent>
-            {(checkoutData as any)?.available_schedules?.map((schedule: any) => (
-              <SelectItem key={schedule.id} value={JSON.stringify(schedule)}>
-                <div className="flex flex-col text-sm gap-1">
-                  {schedule.start_at} - {schedule.end_at}
-                </div>
-              </SelectItem>
-            ))}
+            {(checkoutData as any)?.available_schedules?.map(
+              (schedule: any) => (
+                <SelectItem key={schedule.id} value={JSON.stringify(schedule)}>
+                  <div className="flex flex-col text-sm gap-1">
+                    {schedule.start_at} - {schedule.end_at}
+                  </div>
+                </SelectItem>
+              ),
+            )}
           </SelectContent>
         </Select>
       </FormSection>
@@ -234,25 +256,31 @@ const CheckoutForm = () => {
           type="number"
           // {...form.register("driver_tip")}
           value={watch("driver_tip")}
-          onChange={(e)=>setValue('driver_tip', Number(e.target.value))}
+          onChange={(e) => setValue("driver_tip", Number(e.target.value))}
         />
       </FormSection>
 
       <FormSection title="ملاحظات اضافية">
-        <Textarea
-          className="py-6"
-          {...form.register("details")}
-        />
+        <Textarea className="py-6" {...form.register("details")} />
       </FormSection>
 
-      <button type="submit" className="bg-slate-950 text-slate-50 py-2 rounded-md">
+      <button
+        type="submit"
+        className="bg-slate-950 text-slate-50 py-2 rounded-md"
+      >
         شراء
       </button>
     </form>
   );
 };
 
-const FormSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
+const FormSection = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
   <div>
     <p className="text-sm mb-2">{title}</p>
     {children}

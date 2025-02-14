@@ -1,29 +1,34 @@
-'use client';
+"use client";
 import React, { useEffect, useState } from "react";
-// next-auth 
+// next-auth
 import { useSession } from "next-auth/react";
-// next-navigation 
+// next-navigation
 import { useRouter } from "next/navigation";
-// form 
+// form
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-// components 
+// components
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import CirclesLoader from "@/components/loader/circles-loader";
-// api calls 
+// api calls
 import { getCheckout } from "@/api-calls/checkout/checkout";
 import { getUserAddress } from "@/api-calls/user/getUserAddresses";
 import { getPaymentMethods } from "@/api-calls/getPaymentMethods";
 import { getBaseUrl } from "@/api-calls/actions/getBaseUrl";
-// utils 
+// utils
 import { fireAlert } from "@/lib/fireAlert";
 import PinLocation from "@/app/(app)/profile/components/pin-location";
-
 
 const schema = z.object({
   details: z.string(),
@@ -43,7 +48,7 @@ type FormValues = z.infer<typeof schema>;
 const UserDataForm = () => {
   const { data: session } = useSession();
   const router = useRouter();
-  
+
   const [isLoading, setIsLoading] = useState(true);
   const [checkoutData, setCheckoutData] = useState(null);
   const [addresses, setAddresses] = useState([]);
@@ -67,17 +72,23 @@ const UserDataForm = () => {
     },
   });
 
-  const { handleSubmit, setValue, watch, getValues, formState:{errors} } = form;
+  const {
+    handleSubmit,
+    setValue,
+    watch,
+    getValues,
+    formState: { errors },
+  } = form;
 
-  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [checkoutResponse, addressesResponse, methodsResponse] = await Promise.all([
-          getCheckout(),
-          getUserAddress(),
-          getPaymentMethods()
-        ]);
+        const [checkoutResponse, addressesResponse, methodsResponse] =
+          await Promise.all([
+            getCheckout(),
+            getUserAddress(),
+            getPaymentMethods(),
+          ]);
         setCheckoutData(checkoutResponse);
         setAddresses(addressesResponse?.data ?? []);
         setPaymentMethods(methodsResponse?.data ?? []);
@@ -94,10 +105,14 @@ const UserDataForm = () => {
   const onSubmit = async (values: FormValues) => {
     try {
       const baseUrl = await getBaseUrl();
-      const formattedData:any = {
+      const formattedData: any = {
         ...values,
-        schedule: { id: values?.schedule_id ? JSON.parse(values?.schedule_id ?? "{}").id : undefined },
-        payment_method: { id: values.payment_method?.id }
+        schedule: {
+          id: values?.schedule_id
+            ? JSON.parse(values?.schedule_id ?? "{}").id
+            : undefined,
+        },
+        payment_method: { id: values.payment_method?.id },
       };
 
       delete formattedData.schedule_id;
@@ -112,7 +127,7 @@ const UserDataForm = () => {
       });
 
       const data = await response.json();
-      
+
       if (data?.id) {
         fireAlert("تم استلام طلبك بنجاح", "success");
         router.push("/checkout/review");
@@ -131,7 +146,10 @@ const UserDataForm = () => {
   return (
     <div>
       <div className="container px-4 py-8">
-        <form className="flex flex-col gap-4 " onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col gap-4 "
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="flex flex-col md:flex-row gap-4">
             <div className="w-full flex flex-col gap-4">
               <FormSection title="العنوان">
@@ -140,9 +158,17 @@ const UserDataForm = () => {
                   value={selectedAddress}
                   onValueChange={(value) => {
                     setSelectedAddress(value);
-                    const currentAddress = addresses.find((i: any) => i.id === value);
-                    setValue("address_details", (currentAddress as any)?.details ?? "");
-                    setValue("address_location", (currentAddress as any)?.location ?? "");
+                    const currentAddress = addresses.find(
+                      (i: any) => i.id === value,
+                    );
+                    setValue(
+                      "address_details",
+                      (currentAddress as any)?.details ?? "",
+                    );
+                    setValue(
+                      "address_location",
+                      (currentAddress as any)?.location ?? "",
+                    );
                   }}
                 >
                   <SelectTrigger className="w-full py-6">
@@ -161,9 +187,16 @@ const UserDataForm = () => {
               <FormSection title="طريقة الدفع">
                 <Select
                   dir="rtl"
-                  value={watch("payment_method") ? JSON.stringify(watch("payment_method")) : undefined}
+                  value={
+                    watch("payment_method")
+                      ? JSON.stringify(watch("payment_method"))
+                      : undefined
+                  }
                   onValueChange={(value) => {
-                    setValue("payment_method", value ? JSON.parse(value) : null);
+                    setValue(
+                      "payment_method",
+                      value ? JSON.parse(value) : null,
+                    );
                   }}
                 >
                   <SelectTrigger className="w-full py-6">
@@ -171,7 +204,10 @@ const UserDataForm = () => {
                   </SelectTrigger>
                   <SelectContent>
                     {paymentMethods?.map((method: any) => (
-                      <SelectItem key={method.id} value={JSON.stringify(method)}>
+                      <SelectItem
+                        key={method.id}
+                        value={JSON.stringify(method)}
+                      >
                         {method.name}
                       </SelectItem>
                     ))}
@@ -194,13 +230,18 @@ const UserDataForm = () => {
                     <SelectValue placeholder="الموعد" />
                   </SelectTrigger>
                   <SelectContent>
-                    {(checkoutData as any)?.available_schedules?.map((schedule: any) => (
-                      <SelectItem key={schedule.id} value={JSON.stringify(schedule)}>
-                        <div className="flex flex-col text-sm gap-1">
-                          {schedule.start_at} - {schedule.end_at}
-                        </div>
-                      </SelectItem>
-                    ))}
+                    {(checkoutData as any)?.available_schedules?.map(
+                      (schedule: any) => (
+                        <SelectItem
+                          key={schedule.id}
+                          value={JSON.stringify(schedule)}
+                        >
+                          <div className="flex flex-col text-sm gap-1">
+                            {schedule.start_at} - {schedule.end_at}
+                          </div>
+                        </SelectItem>
+                      ),
+                    )}
                   </SelectContent>
                 </Select>
               </FormSection>
@@ -208,7 +249,9 @@ const UserDataForm = () => {
               <RadioGroup
                 dir="rtl"
                 value={watch("delivery_date")}
-                onValueChange={(value: string) => setValue("delivery_date", value)}
+                onValueChange={(value: string) =>
+                  setValue("delivery_date", value)
+                }
                 className="grid grid-cols-3"
               >
                 {availableDates.map((date: any) => (
@@ -225,15 +268,14 @@ const UserDataForm = () => {
                   type="number"
                   // {...form.register("driver_tip")}
                   value={watch("driver_tip")}
-                  onChange={(e)=>setValue('driver_tip', Number(e.target.value))}
+                  onChange={(e) =>
+                    setValue("driver_tip", Number(e.target.value))
+                  }
                 />
               </FormSection>
 
               <FormSection title="ملاحظات اضافية">
-                <Textarea
-                  className="py-6"
-                  {...form.register("details")}
-                />
+                <Textarea className="py-6" {...form.register("details")} />
               </FormSection>
             </div>
             <div className="w-full lg:w-96 lg:min-w-96 flex flex-col gap-4">
@@ -243,7 +285,7 @@ const UserDataForm = () => {
                   type="text"
                   // {...form.register("driver_tip")}
                   value={watch("address_details")}
-                  onChange={(e)=>setValue('address_details', e.target.value)}
+                  onChange={(e) => setValue("address_details", e.target.value)}
                 />
               </FormSection>
               <PinLocation
@@ -260,21 +302,29 @@ const UserDataForm = () => {
               />
             </div>
           </div>
-          <button type='submit' className="py-2 border-[1px] border-slate-400 rounded-md">تاكيد الطلب</button>
+          <button
+            type="submit"
+            className="py-2 border-[1px] border-slate-400 rounded-md"
+          >
+            تاكيد الطلب
+          </button>
         </form>
       </div>
     </div>
+  );
+};
 
-  )
-}
-
-
-const FormSection = ({ title, children }: { title: string; children: React.ReactNode }) => (
+const FormSection = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
   <div>
     <p className="text-sm mb-2">{title}</p>
     {children}
   </div>
 );
 
-
-export default UserDataForm
+export default UserDataForm;

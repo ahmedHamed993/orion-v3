@@ -1,6 +1,9 @@
+import { getBaseUrl } from "../actions/getBaseUrl";
+
 export const otpLogin = async (phone: string, otp: string) => {
+  const baseUrl = await getBaseUrl();
   try {
-    const response = await fetch(`${process.env.BASE_URL}/otp/login`, {
+    const response = await fetch(`${baseUrl}/otp/login`, {
       method: "POST",
       body: JSON.stringify({ phone: phone, pin: otp }),
       headers: {

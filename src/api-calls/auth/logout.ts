@@ -1,7 +1,11 @@
 "use server";
+
+import { getBaseUrl } from "../actions/getBaseUrl";
+
 export const logout = async (token: string) => {
+  const baseUrl = await getBaseUrl();
   try {
-    const response = await fetch(`${process.env.BASE_URL}/auth/logout`, {
+    const response = await fetch(`${baseUrl}/auth/logout`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -11,7 +11,7 @@ type Props = {
 const containerStyle = {
   width: "100%",
   height: "400px",
-  borderRadius:"8px",
+  borderRadius: "8px",
 };
 
 const PinLocation = ({ defaultLocation, handlePositionChanging }: Props) => {
@@ -34,7 +34,6 @@ const PinLocation = ({ defaultLocation, handlePositionChanging }: Props) => {
   useEffect(() => {
     setCenter(defaultLocation); // Update marker when address changes
   }, [defaultLocation]);
-
 
   const onUnmount = useCallback(function callback(map: any) {
     setMap(null);

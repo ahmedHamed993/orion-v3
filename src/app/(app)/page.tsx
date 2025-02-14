@@ -9,7 +9,6 @@ export default async function Home() {
   const banners = await getBanners();
   const categories = await getCategories("?sorts=sort&paginate=12");
   const meta = await getMeta();
-  console.log("banners", banners);
   return (
     <div>
       <HomeBanners banners={banners?.data || []} />

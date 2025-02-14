@@ -6,7 +6,6 @@ import AddressRow from "./address-row";
 
 const UserAddress = async () => {
   const addresses = await getUserAddress();
-  console.log("addresses", addresses);
   return (
     <div className="bg-slate-50 rounded-md p-4 shadow-sm relative flex flex-col gap-4 ">
       <div className="flex justify-between items-center">

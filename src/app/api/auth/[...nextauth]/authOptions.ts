@@ -54,7 +54,7 @@ type CustomUser = {
   name?: string | null | undefined;
   email?: string | null | undefined;
   image?: string | null | undefined;
-  phone?:string | null | undefined;
+  phone?: string | null | undefined;
   accessToken?: string | null | undefined;
 };
 

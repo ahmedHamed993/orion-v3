@@ -15,7 +15,6 @@ import UserOrders from "./components/user-orders";
 const Profile = async () => {
   const session = await getServerSession(authOptions);
   const me = await getMe(session?.user.accessToken || "");
-  console.log("session", session);
   if (!session?.user?.accessToken) {
     redirect("/");
   }

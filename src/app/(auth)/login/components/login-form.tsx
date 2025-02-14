@@ -34,7 +34,6 @@ const LoginForm = ({ logo, primaryColor }: Props) => {
   const login: SubmitHandler<Record<string, any>> = async (values) => {
     try {
       const otpResponse = await getOtp(values?.phone);
-      console.log("otp response",otpResponse);
       if (!otpResponse?.status || otpResponse?.exists == true) {
         setPhase("otp");
         fireAlert(otpResponse?.message, "success");

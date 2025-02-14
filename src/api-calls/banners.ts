@@ -1,14 +1,14 @@
 import { Banners, Meta } from "@/types/types";
+import { getBaseUrl } from "./actions/getBaseUrl";
 type GetBanners = () => Promise<Banners | null>;
 export const getBanners: GetBanners = async () => {
+  const baseUrl = await getBaseUrl();
   try {
-    const response = await fetch(`${process.env.BASE_URL}/banners`);
-    console.log("response", response);
+    const response = await fetch(`${baseUrl}/banners`);
     const data = await response.json();
 
     return data;
   } catch (error) {
-    console.log("error", error);
     return null;
   }
 };

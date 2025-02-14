@@ -1,13 +1,13 @@
-import React from 'react';
-// components 
-import UserDataForm from './components/user-data-form'
+import React from "react";
+// components
+import UserDataForm from "./components/user-data-form";
 
 const UserData = () => {
   return (
     <div>
-        <UserDataForm />
+      <UserDataForm />
     </div>
-  )
-}
+  );
+};
 
-export default UserData
+export default UserData;

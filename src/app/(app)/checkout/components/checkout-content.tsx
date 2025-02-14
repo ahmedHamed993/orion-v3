@@ -19,10 +19,10 @@ const CheckoutContent = () => {
 
   const refetch = () => setRefetchFlag((prev) => !prev);
 
-  const getPrimaryColor = async ()=> {
+  const getPrimaryColor = async () => {
     const meta = await getMeta();
     setPrimaryColor(meta?.vendor?.color_primary || "#101010");
-  }
+  };
 
   const getCheckoutData = async () => {
     setLoading(true);
@@ -30,7 +30,7 @@ const CheckoutContent = () => {
     setCheckoutData(checkout);
     setLoading(false);
   };
-  
+
   useEffect(() => {
     getCheckoutData();
     getPrimaryColor();
@@ -86,7 +86,16 @@ const CheckoutContent = () => {
           </ul>
         )}
         {/* <CheckoutModal /> */}
-        <Link href="/checkout/user-data" className='block text-center w-full py-2 rounded-md' style={{backgroundColor:primaryColor, color:getContrastColor(primaryColor)}}>التالي</Link>
+        <Link
+          href="/checkout/user-data"
+          className="block text-center w-full py-2 rounded-md"
+          style={{
+            backgroundColor: primaryColor,
+            color: getContrastColor(primaryColor),
+          }}
+        >
+          التالي
+        </Link>
       </div>
     </>
   );
